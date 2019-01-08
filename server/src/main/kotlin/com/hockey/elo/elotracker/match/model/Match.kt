@@ -9,11 +9,11 @@ import javax.persistence.Id
 data class Match(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long,
-    var playerOneId: String,
-    var playerTwoId: String,
+    var playerOneId: Long,
+    var playerTwoId: Long,
     var playerOneScore: Long = 0L,
     var playerTwoScore: Long = 0L,
-    var winner: String //player Id
+    var winner: Long //player Id
 ) {
-    constructor() : this (0L, "", "", 0L, 0L, "")
+    constructor() : this (0L, 0L, 0L, 0L, 0L, 0L)
 }
