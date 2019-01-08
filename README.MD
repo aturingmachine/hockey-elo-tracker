@@ -13,3 +13,7 @@ credentials. That repository will be linked to this one once it has been created
 The package structure of this application is divided by feature, for example all controller, services, and repositories
 related to the `User` resource live in the `user` package and are further divided based on function.
 
+## Contributing
+
+Feel free to check out the [GitHub Project](https://github.com/aturingmachine/hockey-elo-tracker/projects/1) to pick up some work
+to get started!
