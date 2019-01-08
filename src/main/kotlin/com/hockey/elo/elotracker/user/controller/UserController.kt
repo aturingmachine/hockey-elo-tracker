@@ -2,7 +2,7 @@ package com.hockey.elo.elotracker.user.controller
 
 import com.hockey.elo.elotracker.user.model.User
 import com.hockey.elo.elotracker.user.model.UserDTO
-import com.hockey.elo.elotracker.user.model.UserSubmission
+import com.hockey.elo.elotracker.user.model.UserLoginSubmission
 import com.hockey.elo.elotracker.user.service.UserService
 import org.springframework.web.bind.annotation.*
 
@@ -20,7 +20,7 @@ class UserController(
       userService.getUser(id)
 
   @PostMapping("/api/v1/users")
-  fun createNewUser(@RequestBody userSubmission: UserSubmission): User =
-      userService.createNewUser(userSubmission)
+  fun createNewUser(@RequestBody userLoginSubmission: UserLoginSubmission): User =
+      userService.createNewUser(userLoginSubmission)
 
 }

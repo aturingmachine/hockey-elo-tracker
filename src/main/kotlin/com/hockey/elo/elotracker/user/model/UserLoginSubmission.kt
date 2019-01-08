@@ -1,6 +1,6 @@
 package com.hockey.elo.elotracker.user.model
 
-data class UserSubmission(
+data class UserLoginSubmission(
     val name: String,
     val rfid: String
 )

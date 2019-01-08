@@ -4,7 +4,7 @@ import com.hockey.elo.elotracker.user.exception.UserAlreadyRegisteredException
 import com.hockey.elo.elotracker.user.exception.UserNotFoundException
 import com.hockey.elo.elotracker.user.model.User
 import com.hockey.elo.elotracker.user.model.UserDTO
-import com.hockey.elo.elotracker.user.model.UserSubmission
+import com.hockey.elo.elotracker.user.model.UserLoginSubmission
 import com.hockey.elo.elotracker.user.repository.UserRepository
 import org.springframework.stereotype.Service
 
@@ -14,11 +14,11 @@ class UserService(private val userRepository: UserRepository) {
   fun getAllUsers(): List<User> =
       userRepository.findAll()
 
-  fun createNewUser(userSubmission: UserSubmission): User {
-    userRepository.findByRfid(userSubmission.rfid) ?: run {
+  fun createNewUser(userLoginSubmission: UserLoginSubmission): User {
+    userRepository.findByRfid(userLoginSubmission.rfid) ?: run {
       val user = User()
-      user.name = userSubmission.name
-      user.rfid = userSubmission.rfid
+      user.name = userLoginSubmission.name
+      user.rfid = userLoginSubmission.rfid
       return userRepository.save(user)
     }
     throw UserAlreadyRegisteredException("user.rfid-in-use")
