@@ -17,4 +17,9 @@ class MatchController(private val matchService: MatchService) {
   fun updateMatch(@PathVariable("id") id : Long,
                   @RequestBody matchUpdateRequest: MatchUpdateRequest) =
       matchService.updateMatch(id, matchUpdateRequest)
+
+  @PutMapping("/api/v1/matches/{id}/{playerOneWin}")
+  fun completeMatch(@PathVariable("id") id : Long,
+                    @PathVariable("playerOneWin") playerOneWin: Boolean) =
+      matchService.completeMatch(id, playerOneWin)
 }

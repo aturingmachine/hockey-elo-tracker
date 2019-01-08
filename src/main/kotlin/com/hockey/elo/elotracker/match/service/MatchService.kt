@@ -20,7 +20,7 @@ class MatchService(private val matchRepository: MatchRepository) {
 
   fun updateMatch(id: Long, matchUpdateRequest: MatchUpdateRequest) {
     if (matchRepository.findById(id).isPresent) {
-      var match = matchRepository.findById(id).get()
+      val match = matchRepository.findById(id).get()
       match.playerOneScore = matchUpdateRequest.playerOneScore
       match.playerTwoScore = matchUpdateRequest.playerTwoScore
       matchRepository.save(match)
@@ -28,6 +28,17 @@ class MatchService(private val matchRepository: MatchRepository) {
       throw MatchNotFoundException("Match Id: $id Not Found")
     }
 
+  }
+
+  fun completeMatch(id: Long, playerOneWin: Boolean) {
+    if (matchRepository.findById(id).isPresent) {
+      val match = matchRepository.findById(id).get()
+      if (playerOneWin) match.winner = match.playerOneId else match.winner = match.playerTwoId
+      matchRepository.save(match)
+      //calculate new elos using class from ISSUE #8
+    } else {
+      throw MatchNotFoundException("Match Id: $id Not Found")
+    }
   }
 
 }

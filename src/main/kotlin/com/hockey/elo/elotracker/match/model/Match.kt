@@ -12,7 +12,8 @@ data class Match(
     var playerOneId: String,
     var playerTwoId: String,
     var playerOneScore: Long = 0L,
-    var playerTwoScore: Long = 0L
+    var playerTwoScore: Long = 0L,
+    var winner: String //player Id
 ) {
-    constructor() : this (0L, "", "", 0L, 0L)
+    constructor() : this (0L, "", "", 0L, 0L, "")
 }
