@@ -1,0 +1,23 @@
+# for use on https://www.websequencediagrams.com/
+title Elo Tracker
+
+RFID-Scanner->App: RFID Serial Number
+App->Server: Send RFID to server for P1
+Server->App: Send back User info for RFID
+alt User Does not exist in DB
+Server->App: 404
+App->App: Collect User Info
+App->Server: Send Server new User info
+Server->Server: Create new user with RFID and User Info
+Server->App: Send back new user
+end
+App->App: Store User
+App->Server: Send RFID to server for P2
+Server->App: Send back User info for RFID
+App->App: Store User
+App->Server: Create match with 2 users logged in
+Server->App: Send Back Match ID
+note over App: Users play match
+App->Server: Send match complete
+Server->Server: Update match record, elos, elo history
+Server->App: Send back Ok

@@ -1,7 +1,7 @@
 package com.hockey.elo.elotracker.match.service
 
 import com.hockey.elo.elotracker.match.exception.MatchNotFoundException
-import com.hockey.elo.elotracker.match.model.Match
+import com.hockey.elo.elotracker.match.model.MatchRecord
 import com.hockey.elo.elotracker.match.model.MatchCreationRequest
 import com.hockey.elo.elotracker.match.model.MatchUpdateRequest
 import com.hockey.elo.elotracker.match.repository.MatchRepository
@@ -12,7 +12,7 @@ class MatchService(private val matchRepository: MatchRepository) {
 
 
   fun createMatch(matchCreationRequest: MatchCreationRequest): Long {
-    val newMatch = Match()
+    val newMatch = MatchRecord()
     newMatch.playerOneId = matchCreationRequest.playerOne
     newMatch.playerTwoId = matchCreationRequest.playerTwo
     return matchRepository.save(newMatch).id
@@ -25,7 +25,7 @@ class MatchService(private val matchRepository: MatchRepository) {
       match.playerTwoScore = matchUpdateRequest.playerTwoScore
       matchRepository.save(match)
     } else {
-      throw MatchNotFoundException("Match Id: $id Not Found")
+      throw MatchNotFoundException("MatchRecord Id: $id Not Found")
     }
 
   }
@@ -37,7 +37,7 @@ class MatchService(private val matchRepository: MatchRepository) {
       matchRepository.save(match)
       //calculate new elos using class from ISSUE #8
     } else {
-      throw MatchNotFoundException("Match Id: $id Not Found")
+      throw MatchNotFoundException("MatchRecord Id: $id Not Found")
     }
   }
 
