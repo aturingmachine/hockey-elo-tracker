@@ -62,6 +62,7 @@
 ### Elo History Data Model
 | Field Name | Data Type | Notes                    |
 |------------|-----------|--------------------------|
+| id         | long      |                          |
 | userId     | long      |                          |
 | elo        | int       | Elo pre-change           |
 | date       | Date      | Date elo change occurred |
