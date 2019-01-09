@@ -11,9 +11,9 @@ data class User (
         var id: Long = 0L,
         var rfid: String = "",
         var name: String = "",
-        var elo: Long = 1200L,
-        var wins: Long = 0L,
-        var losses: Long = 0L
+        var elo: Int = 1200,
+        var wins: Int = 0,
+        var losses: Int = 0
 ) {
-    constructor() : this (0L, "", "", 1200L, 0L, 0L)
+    constructor() : this (0L, "", "", 1200, 0, 0)
 }
