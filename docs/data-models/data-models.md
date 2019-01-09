@@ -8,18 +8,18 @@
 | id         | long      | auto generated          |
 | rfid       | string    | rfid card serial number |
 | name       | string    |                         |
-| elo        | long      | defaults to 1200        |
-| wins       | long      |                         |
-| losses     | long      |                         |
+| elo        | int      | defaults to 1200        |
+| wins       | int      |                         |
+| losses     | int      |                         |
 
 ### User DTO
 | Field Name | Data Type | Notes                   |
 |------------|-----------|-------------------------|
 | id         | long      | auto generated          |
 | name       | string    |                         |
-| elo        | long      | defaults to 1200        |
-| wins       | long      |                         |
-| losses     | long      |                         |
+| elo        | int      | defaults to 1200        |
+| wins       | int      |                         |
+| losses     | int      |                         |
 
 ### User Login Submission
 > Sent from app on login
@@ -37,8 +37,8 @@
 | id             | long      | auto generated           |
 | playerOneId    | long      |                          |
 | playerTwoId    | long      |                          |
-| playerOneScore | long      |                          |
-| playerTwoScore | long      |                          |
+| playerOneScore | int      |                          |
+| playerTwoScore | int      |                          |
 | winner         | long      | id of the winning player |
 
 ### Match Creation Request
