@@ -56,3 +56,12 @@
 |----------------|-----------|--------------------------|
 | playerOneScore | long      |                          |
 | playerTwoScore | long      |                          |
+
+## Elo History
+
+### Elo History Data Model
+| Field Name | Data Type | Notes                    |
+|------------|-----------|--------------------------|
+| userId     | long      |                          |
+| elo        | int       | Elo pre-change           |
+| date       | Date      | Date elo change occurred |
