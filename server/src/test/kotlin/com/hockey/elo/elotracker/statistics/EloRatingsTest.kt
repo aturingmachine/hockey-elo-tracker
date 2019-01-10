@@ -11,42 +11,42 @@ class EloRatingsTest {
     private val player2Ratings = EloRatings(player2Elo)
 
     @Test
-    fun calcWinAgainst_Player1BeatsPlayer2() {
+    fun `calcWinAgainst - Player1 Beats Player2`() {
         assertThat(player1Ratings.calcWinAgainst(player2Elo)).isEqualTo(2403)
     }
 
     @Test
-    fun calcLossAgainst_Player1LosesToPlayer2() {
+    fun `calcLossAgainst - Player1 Loses To Player2`() {
         assertThat(player1Ratings.calcLossAgainst(player2Elo)).isEqualTo(2371)
     }
 
     @Test
-    fun calcTieAgainst_Player1TiesPlayer2() {
+    fun `calcTieAgainst - Player1 Ties Player2`() {
         assertThat(player1Ratings.calcTieAgainst(player2Elo)).isEqualTo(2387)
     }
 
     @Test
-    fun calcWinAgainst_Player2BeatsPlayer1() {
+    fun `calcWinAgainst - Player2 Beats Player1`() {
         assertThat(player2Ratings.calcWinAgainst(player1Elo)).isEqualTo(2029)
     }
 
     @Test
-    fun calcLossAgainst_Player2LosesToPlayer1() {
+    fun `calcLossAgainst - Player2 Loses To Player1`() {
         assertThat(player2Ratings.calcLossAgainst(player1Elo)).isEqualTo(1997)
     }
 
     @Test
-    fun calcTieAgainst_Player2TiesPlayer1() {
+    fun `calcTieAgainst - Player2 Ties Player1`() {
         assertThat(player2Ratings.calcTieAgainst(player1Elo)).isEqualTo(2013)
     }
 
     @Test
-    fun oddsAgainst_Player1AgainstPlayer2_OddsAreHigh() {
+    fun `oddsAgainst - Player1 Against Player2 Odds Are High`() {
         assertThat(player1Ratings.oddsAgainst(player2Elo)).isEqualTo(0.908)
     }
 
     @Test
-    fun oddsAgainst_Player2AgainstPlayer1_OddsAreLow() {
+    fun `oddsAgainst - Player2 Against Player 1 Odds Are Low`() {
         assertThat(player2Ratings.oddsAgainst(player1Elo)).isEqualTo(0.085)
     }
 
