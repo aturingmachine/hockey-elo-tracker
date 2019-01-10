@@ -14,6 +14,4 @@ data class User (
         var elo: Int = 1200,
         var wins: Int = 0,
         var losses: Int = 0
-) {
-    constructor() : this (0L, "", "", 1200, 0, 0)
-}
+)

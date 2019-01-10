@@ -39,4 +39,15 @@ class EloRatingsTest {
     fun calcTieAgainst_Player2TiesPlayer1() {
         assertThat(player2Ratings.calcTieAgainst(player1Elo)).isEqualTo(2013)
     }
+
+    @Test
+    fun oddsAgainst_Player1AgainstPlayer2_OddsAreHigh() {
+        assertThat(player1Ratings.oddsAgainst(player2Elo)).isEqualTo(0.908)
+    }
+
+    @Test
+    fun oddsAgainst_Player2AgainstPlayer1_OddsAreLow() {
+        assertThat(player2Ratings.oddsAgainst(player1Elo)).isEqualTo(0.085)
+    }
+
 }

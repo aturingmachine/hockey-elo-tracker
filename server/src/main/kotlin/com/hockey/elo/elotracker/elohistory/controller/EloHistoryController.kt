@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class EloHistoryController(private val eloHistoryService: EloHistoryService) {
 
-  //this is untested
+  // TODO: this is untested
   @GetMapping("/api/v1/elo-history/{userId}")
-  fun getEloHistoryForUser(@PathVariable("userId") userId: Long) : List<EloHistory> =
-      eloHistoryService.getEloHistoryForUser(userId)
+  fun retrieveEloHistoryForUser(@PathVariable("userId") userId: Long) : List<EloHistory> =
+      eloHistoryService.retrieveEloHistoryFor(userId = userId)
+
 }

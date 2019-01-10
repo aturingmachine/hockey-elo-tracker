@@ -4,4 +4,4 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-open class UserAlreadyRegisteredException(message: String?) : Throwable(message)
+open class UserAlreadyRegistered(message: String?) : Throwable(message)

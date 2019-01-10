@@ -1,7 +1,13 @@
+### DEPENDENCY MANAGEMENT ###
 .gradle
-/build/
+gradle/
+gradlew*
 !gradle/wrapper/gradle-wrapper.jar
 
+### BUILD ###
+/build/
+
+### MacOS ###
 *.DS_Store
 
 ### STS ###

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class MatchController(private val matchService: MatchService) {
 
-
   @PostMapping("/api/v1/matches")
   fun createMatch(@RequestBody matchCreationRequest: MatchCreationRequest): Long =
       matchService.createMatch(matchCreationRequest)
@@ -22,4 +21,5 @@ class MatchController(private val matchService: MatchService) {
   fun completeMatch(@PathVariable("id") id : Long,
                     @PathVariable("playerOneWin") playerOneWin: Boolean) =
       matchService.completeMatch(id, playerOneWin)
+
 }

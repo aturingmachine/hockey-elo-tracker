@@ -1,5 +1,7 @@
 package com.hockey.elo.elotracker.statistics
 
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
 class EloRatings(
@@ -13,6 +15,14 @@ class EloRatings(
     fun calcLossAgainst(player2Elo: Int): Int = calcRatingAgainst(player2Elo, actualScore = 0.0)
 
     fun calcTieAgainst(player2Elo: Int): Int = calcRatingAgainst(player2Elo, actualScore = 0.5)
+
+    fun oddsAgainst(player2Elo: Int): Double {
+        val differenceInElo = player1Elo - player2Elo
+        val probability =  1 - (1 / (1 + Math.exp(0.00583 * differenceInElo - 0.0505)))
+        val df = DecimalFormat("#.###")
+        df.roundingMode = RoundingMode.CEILING
+        return df.format(probability).toDouble()
+    }
 
     private fun calcRatingAgainst(elo2: Int, actualScore: Double): Int {
         return player1Elo + (kFactor * (actualScore -

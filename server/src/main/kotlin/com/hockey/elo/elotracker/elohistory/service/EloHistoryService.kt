@@ -10,7 +10,7 @@ import java.util.*
 class EloHistoryService(private val eloHistoryRepository: EloHistoryRepository) {
 
   //should return last 6 months of a user's elo history
-  fun getEloHistoryForUser(userId: Long): List<EloHistory> {
+  fun retrieveEloHistoryFor(userId: Long): List<EloHistory> {
     val records = eloHistoryRepository.findAllById(listOf(userId))
     //probably a better way to do this but it is 5 AM and I have 4 hours of sleep
     return records.filter { record ->

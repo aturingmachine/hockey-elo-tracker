@@ -9,4 +9,3 @@ class EloTrackerApplication
 fun main(args: Array<String>) {
 	runApplication<EloTrackerApplication>(*args)
 }
-
