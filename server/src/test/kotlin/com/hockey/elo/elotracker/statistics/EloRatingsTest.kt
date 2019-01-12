@@ -50,4 +50,9 @@ class EloRatingsTest {
         assertThat(player2Ratings.oddsAgainst(player1Elo)).isEqualTo(0.085)
     }
 
+    @Test
+    fun `oddsAgainst - Equal Players have the same odds`() {
+        // There is a rounding issue because this in reality should be 50/50 chance
+        assertThat(EloRatings(1200).oddsAgainst(1200)).isEqualTo(0.488)
+    }
 }
