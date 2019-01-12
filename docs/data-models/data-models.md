@@ -7,10 +7,10 @@
 |------------|-----------|-------------------------|
 | id         | long      | auto generated          |
 | rfid       | string    | rfid card serial number |
-| name       | string    |                         |
-| elo        | int      | defaults to 1200        |
-| wins       | int      |                         |
-| losses     | int      |                         |
+| name       | string    |the name of the user     |
+| elo        | int      | defaults to 1200         |
+| wins       | int      |total number of wins      |
+| losses     | int      |total number of losses    |
 
 ### User DTO
 | Field Name | Data Type | Notes                   |
@@ -31,14 +31,14 @@
 
 ## Matches
 
-### Match Data Model
+### Match Domain Model
 | Field Name     | Data Type | Notes                    |
 |----------------|-----------|--------------------------|
 | id             | long      | auto generated           |
-| playerOneId    | long      |                          |
-| playerTwoId    | long      |                          |
-| playerOneScore | int      |                          |
-| playerTwoScore | int      |                          |
+| playerOneId    | long      | auto generated db id of player|
+| playerTwoId    | long      | auto generated db id of player|
+| playerOneScore | int      | the final score of the player |
+| playerTwoScore | int      |the final score of the player |
 | winner         | long      | id of the winning player |
 
 ### Match Creation Request
@@ -64,5 +64,5 @@
 |------------|-----------|--------------------------|
 | id         | long      |                          |
 | userId     | long      |                          |
-| elo        | int       | Elo pre-change           |
+| elo        | int       | Elo post-change           |
 | date       | Date      | Date elo change occurred |
