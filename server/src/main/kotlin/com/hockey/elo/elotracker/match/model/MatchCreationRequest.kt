@@ -1,6 +1,11 @@
 package com.hockey.elo.elotracker.match.model
 
+import javax.validation.constraints.NotBlank
+
 data class MatchCreationRequest(
-    val playerOne: Long,
-    val playerTwo: Long
+        @NotBlank
+        val playerOne: Long,
+
+        @NotBlank
+        val playerTwo: Long
 )

@@ -1,12 +1,9 @@
 package com.hockey.elo.elotracker.user.model
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
-data class User (
+data class UserRecord (
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long = 0L,
         var rfid: String = "",
@@ -14,6 +11,4 @@ data class User (
         var elo: Int = 1200,
         var wins: Int = 0,
         var losses: Int = 0
-) {
-    constructor() : this (0L, "", "", 1200, 0, 0)
-}
+)
