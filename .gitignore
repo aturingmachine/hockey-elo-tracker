@@ -5,7 +5,7 @@ gradlew*
 !gradle/wrapper/gradle-wrapper.jar
 
 ### BUILD ###
-/build/
+*/build/
 
 ### MacOS ###
 *.DS_Store

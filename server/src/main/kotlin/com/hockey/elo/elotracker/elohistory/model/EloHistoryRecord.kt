@@ -7,7 +7,7 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 
 @Entity
-data class EloHistory(
+data class EloHistoryRecord(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
     val userId: Long,

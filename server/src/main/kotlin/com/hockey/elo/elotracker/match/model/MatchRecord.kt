@@ -13,5 +13,5 @@ data class MatchRecord(
     var playerTwoId: Long = 0L,
     var playerOneScore: Int = 0,
     var playerTwoScore: Int = 0,
-    var winner: Long = 0L
+    var winnerId: Long = 0L
 )

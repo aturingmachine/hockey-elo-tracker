@@ -1,6 +1,5 @@
 package com.hockey.elo.elotracker.user.controller
 
-import com.hockey.elo.elotracker.user.model.User
 import com.hockey.elo.elotracker.user.model.UserDTO
 import com.hockey.elo.elotracker.user.model.UserLoginSubmission
 import com.hockey.elo.elotracker.user.service.UserService
@@ -14,12 +13,12 @@ class UserController(
 ) {
 
   @GetMapping("/api/v1/users")
-  fun getAllUsers(): List<User> =
-      userService.getAllUsers()
+  fun retrieveAllUsers(): List<UserDTO> =
+      userService.retrieveAllUsers()
 
   @GetMapping("/api/v1/users/{id}")
-  fun getUser(@PathVariable id: Long): UserDTO =
-      userService.getUser(id)
+  fun retrieveUser(@PathVariable id: Long): UserDTO =
+      userService.retrieveUser(id)
 
   @PostMapping("/api/v1/users")
   fun createNewUser(@RequestBody userLoginSubmission: UserLoginSubmission): UserDTO =

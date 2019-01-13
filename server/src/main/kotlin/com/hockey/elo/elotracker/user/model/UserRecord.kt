@@ -6,7 +6,7 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 
 @Entity
-data class User (
+data class UserRecord (
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long = 0L,
         var rfid: String = "",
