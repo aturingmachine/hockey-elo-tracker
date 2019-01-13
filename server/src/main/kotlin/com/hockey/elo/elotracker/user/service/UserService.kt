@@ -39,7 +39,7 @@ class UserService(private val userRepository: UserRepository) {
     throw UserAlreadyRegistered("user.rfid-in-use")
   }
 
-  fun updateEloRating(userId: Long, opponentId: Long, didUserWin: Boolean) {
+  fun updateUserStats(userId: Long, opponentId: Long, didUserWin: Boolean) {
     val optionalUserRecord = userRepository.findById(userId)
     val optionalOpponentRecord = userRepository.findById(opponentId)
 
@@ -49,10 +49,14 @@ class UserService(private val userRepository: UserRepository) {
 
       if (didUserWin) {
         userRecord.elo = EloRatings(userRecord.elo).calcWinAgainst(opponentRecord.elo)
+        userRecord.wins = userRecord.wins + 1
         opponentRecord.elo = EloRatings(opponentRecord.elo).calcLossAgainst(userRecord.elo)
+        opponentRecord.losses = opponentRecord.losses + 1
       } else {
         opponentRecord.elo = EloRatings(opponentRecord.elo).calcWinAgainst(userRecord.elo)
+        opponentRecord.wins = opponentRecord.wins + 1
         userRecord.elo = EloRatings(userRecord.elo).calcLossAgainst(opponentRecord.elo)
+        userRecord.losses = userRecord.losses + 1
       }
       userRepository.save(userRecord)
       userRepository.save(opponentRecord)

@@ -25,7 +25,7 @@ class MatchController(
   fun completeMatch(@PathVariable("id") id: Long,
                     @PathVariable("winnerId") winnerId: String) {
     val matchDTO = matchService.completeMatch(id, winnerId.toLong())
-    userService.updateEloRating(
+    userService.updateUserStats(
             userId = matchDTO.playerOneId,
             opponentId = matchDTO.playerTwoId,
             didUserWin = matchDTO.playerOneId == winnerId.toLong()
