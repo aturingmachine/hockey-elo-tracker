@@ -20,6 +20,22 @@ The repo contains two codebases:
 
 Open the `elo-tracker/server` directory in IntelliJ (if thats what you use) to start importing the dependencies, or go about that how you normally would.
 
+### Gradle (Initial setup)
+
+MacOS
+ 1) `brew install gradle`
+ 2) Expand `server` and run build.gradle to import remaining files
+ 3) Convert `server` to gradle project by right clicking build.gradle and converting to gradle project (near bottom)
+ 4) Uncheck everything in the prompt except to use existing gradle wrapper
+ 5) After conversion add gradle view to workspace (view->tool windows->gradle)
+ 6) Run tests in (hockey-elo-tracker\server\src\test\kotlin) to ensure correct setup
+
+Windows
+ 1) Download gradle and add to top level folder
+ 2) Edit `path` system variable in environment variables to point to your gradle `\bin` directory
+ 3) Ensure gradle is pointing to your local jdk version
+ 4) Run steps 2 - 6 above
+
 ### Database
 
 The application is expecting a MySQL database to be backing it, specifically tested with version `8.0.11`.
