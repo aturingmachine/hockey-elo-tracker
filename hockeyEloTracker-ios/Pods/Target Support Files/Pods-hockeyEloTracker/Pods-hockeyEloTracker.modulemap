@@ -1,0 +1,6 @@
+framework module Pods_hockeyEloTracker {
+  umbrella header "Pods-hockeyEloTracker-umbrella.h"
+
+  export *
+  module * { export * }
+}
