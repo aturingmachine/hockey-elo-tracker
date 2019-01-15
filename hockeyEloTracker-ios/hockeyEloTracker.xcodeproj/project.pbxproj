@@ -104,8 +104,8 @@
 		E023434021E71CCB001AE211 /* hockeyEloTracker */ = {
 			isa = PBXGroup;
 			children = (
-				E023434121E71CCB001AE211 /* AppDelegate.swift */,
 				E023434321E71CCB001AE211 /* ViewController.swift */,
+				E023434121E71CCB001AE211 /* AppDelegate.swift */,
 				E023434521E71CCB001AE211 /* Main.storyboard */,
 				E023434821E71CCC001AE211 /* Assets.xcassets */,
 				E023434A21E71CCC001AE211 /* LaunchScreen.storyboard */,
