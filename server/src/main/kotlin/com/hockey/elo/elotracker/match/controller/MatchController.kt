@@ -1,6 +1,7 @@
 package com.hockey.elo.elotracker.match.controller
 
 import com.hockey.elo.elotracker.match.model.MatchCreationRequest
+import com.hockey.elo.elotracker.match.model.MatchDTO
 import com.hockey.elo.elotracker.match.model.MatchUpdateRequest
 import com.hockey.elo.elotracker.match.service.MatchService
 import com.hockey.elo.elotracker.user.service.UserService
@@ -32,4 +33,13 @@ class MatchController(
     )
   }
 
+  @GetMapping("/api/v1/match/{id}")
+  fun retrieveMatch(@PathVariable("id") id: Long): MatchDTO {
+    return matchService.retrieveMatch(id)
+  }
+
+  @GetMapping("/api/v1/matches")
+  fun retrieveAllMatches(): List<MatchDTO> {
+    return matchService.retrieveAllMatches()
+  }
 }
