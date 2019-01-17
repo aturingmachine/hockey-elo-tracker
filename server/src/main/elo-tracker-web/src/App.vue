@@ -5,13 +5,15 @@
       permanent
       app
       clipped
+      width="200"
     >
     <v-list>
       <v-list-tile
         v-for="link in links"
         :key="link.title"
-        :href="link.href"
+        :to="link.href"
       >
+      <!-- <router-link :to="link.href"> -->
         <v-list-tile-action>
           <v-icon>{{ link.icon }}</v-icon>
         </v-list-tile-action>
@@ -19,6 +21,7 @@
         <v-list-tile-content>
           <v-list-tile-title>{{ link.title }}</v-list-tile-title>
         </v-list-tile-content>
+        <!-- </router-link> -->
       </v-list-tile>
     </v-list>
     </v-navigation-drawer>
@@ -31,6 +34,7 @@
     </v-toolbar>
 
     <v-content>
+      <router-view></router-view>
     </v-content>
   </v-app>
 </template>

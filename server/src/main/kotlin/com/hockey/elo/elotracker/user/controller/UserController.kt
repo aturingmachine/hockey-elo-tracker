@@ -7,11 +7,12 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @Validated
+@CrossOrigin(origins = ["http://localhost:8081"])
 @RestController
 class UserController(
     private val userService: UserService
 ) {
-
+  
   @GetMapping("/api/v1/users")
   fun retrieveAllUsers(): List<UserDTO> =
       userService.retrieveAllUsers()
