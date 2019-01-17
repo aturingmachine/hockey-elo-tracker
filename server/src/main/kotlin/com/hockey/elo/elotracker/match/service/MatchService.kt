@@ -46,4 +46,11 @@ class MatchService(private val matchRepository: MatchRepository) {
     }
   }
 
+  fun retrieveMatch(id: Long): MatchDTO {
+    return MatchDTO(0,0,0,0,0,0)
+  }
+
+  fun retrieveAllMatches(): List<MatchDTO> {
+    return ArrayList()
+  }
 }
