@@ -1,0 +1,590 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B702AD77FF199AB8E1159041 /* Pods_hockeyEloTracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4507B24F4B544DDBB23C75B /* Pods_hockeyEloTracker.framework */; };
+		B7AFB44629A3E3F53E127CC1 /* Pods_hockeyEloTrackerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11EAA4EE6DBDC9C584D3251A /* Pods_hockeyEloTrackerTests.framework */; };
+		E023434221E71CCB001AE211 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E023434121E71CCB001AE211 /* AppDelegate.swift */; };
+		E023434421E71CCB001AE211 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E023434321E71CCB001AE211 /* ViewController.swift */; };
+		E023434721E71CCB001AE211 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E023434521E71CCB001AE211 /* Main.storyboard */; };
+		E023434921E71CCC001AE211 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E023434821E71CCC001AE211 /* Assets.xcassets */; };
+		E023434C21E71CCC001AE211 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E023434A21E71CCC001AE211 /* LaunchScreen.storyboard */; };
+		E023435721E71CCC001AE211 /* hockeyEloTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E023435621E71CCC001AE211 /* hockeyEloTrackerTests.swift */; };
+		E023436221E811F6001AE211 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = E023436121E811F6001AE211 /* State.swift */; };
+		E023436421E813C5001AE211 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = E023436321E813C5001AE211 /* Action.swift */; };
+		E0A8A62721E8557200367140 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A8A62621E8557200367140 /* Reducer.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E023435321E71CCC001AE211 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E023433621E71CCB001AE211 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E023433D21E71CCB001AE211;
+			remoteInfo = hockeyEloTracker;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		119D017E2B6ED0C4DA1FA960 /* Pods-hockeyEloTrackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hockeyEloTrackerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-hockeyEloTrackerTests/Pods-hockeyEloTrackerTests.release.xcconfig"; sourceTree = "<group>"; };
+		11EAA4EE6DBDC9C584D3251A /* Pods_hockeyEloTrackerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hockeyEloTrackerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		46F1598A0D51D8867F7DF8B0 /* Pods-hockeyEloTrackerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hockeyEloTrackerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-hockeyEloTrackerTests/Pods-hockeyEloTrackerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BF0D411BF948B2DF4EF80093 /* Pods-hockeyEloTracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hockeyEloTracker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-hockeyEloTracker/Pods-hockeyEloTracker.debug.xcconfig"; sourceTree = "<group>"; };
+		C4507B24F4B544DDBB23C75B /* Pods_hockeyEloTracker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hockeyEloTracker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0B6A3008301AC338466D218 /* Pods-hockeyEloTracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hockeyEloTracker.release.xcconfig"; path = "Pods/Target Support Files/Pods-hockeyEloTracker/Pods-hockeyEloTracker.release.xcconfig"; sourceTree = "<group>"; };
+		E023433E21E71CCB001AE211 /* hockeyEloTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hockeyEloTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E023434121E71CCB001AE211 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E023434321E71CCB001AE211 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E023434621E71CCB001AE211 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E023434821E71CCC001AE211 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E023434B21E71CCC001AE211 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E023434D21E71CCC001AE211 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E023435221E71CCC001AE211 /* hockeyEloTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = hockeyEloTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E023435621E71CCC001AE211 /* hockeyEloTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hockeyEloTrackerTests.swift; sourceTree = "<group>"; };
+		E023435821E71CCC001AE211 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E023436121E811F6001AE211 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		E023436321E813C5001AE211 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		E0A8A62621E8557200367140 /* Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E023433B21E71CCB001AE211 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B702AD77FF199AB8E1159041 /* Pods_hockeyEloTracker.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E023434F21E71CCC001AE211 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7AFB44629A3E3F53E127CC1 /* Pods_hockeyEloTrackerTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1949D35D672BFF3AC49931AE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C4507B24F4B544DDBB23C75B /* Pods_hockeyEloTracker.framework */,
+				11EAA4EE6DBDC9C584D3251A /* Pods_hockeyEloTrackerTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E023433521E71CCB001AE211 = {
+			isa = PBXGroup;
+			children = (
+				E023434021E71CCB001AE211 /* hockeyEloTracker */,
+				E023435521E71CCC001AE211 /* hockeyEloTrackerTests */,
+				E023433F21E71CCB001AE211 /* Products */,
+				F15C9C6929DE9FD87FB61582 /* Pods */,
+				1949D35D672BFF3AC49931AE /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		E023433F21E71CCB001AE211 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E023433E21E71CCB001AE211 /* hockeyEloTracker.app */,
+				E023435221E71CCC001AE211 /* hockeyEloTrackerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E023434021E71CCB001AE211 /* hockeyEloTracker */ = {
+			isa = PBXGroup;
+			children = (
+				E023434321E71CCB001AE211 /* ViewController.swift */,
+				E023434121E71CCB001AE211 /* AppDelegate.swift */,
+				E023434521E71CCB001AE211 /* Main.storyboard */,
+				E023434821E71CCC001AE211 /* Assets.xcassets */,
+				E023434A21E71CCC001AE211 /* LaunchScreen.storyboard */,
+				E023434D21E71CCC001AE211 /* Info.plist */,
+				E023436121E811F6001AE211 /* State.swift */,
+				E023436321E813C5001AE211 /* Action.swift */,
+				E0A8A62621E8557200367140 /* Reducer.swift */,
+			);
+			path = hockeyEloTracker;
+			sourceTree = "<group>";
+		};
+		E023435521E71CCC001AE211 /* hockeyEloTrackerTests */ = {
+			isa = PBXGroup;
+			children = (
+				E023435621E71CCC001AE211 /* hockeyEloTrackerTests.swift */,
+				E023435821E71CCC001AE211 /* Info.plist */,
+			);
+			path = hockeyEloTrackerTests;
+			sourceTree = "<group>";
+		};
+		F15C9C6929DE9FD87FB61582 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BF0D411BF948B2DF4EF80093 /* Pods-hockeyEloTracker.debug.xcconfig */,
+				D0B6A3008301AC338466D218 /* Pods-hockeyEloTracker.release.xcconfig */,
+				46F1598A0D51D8867F7DF8B0 /* Pods-hockeyEloTrackerTests.debug.xcconfig */,
+				119D017E2B6ED0C4DA1FA960 /* Pods-hockeyEloTrackerTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E023433D21E71CCB001AE211 /* hockeyEloTracker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E023435B21E71CCC001AE211 /* Build configuration list for PBXNativeTarget "hockeyEloTracker" */;
+			buildPhases = (
+				68FA5B50D4B06357931504E7 /* [CP] Check Pods Manifest.lock */,
+				E023433A21E71CCB001AE211 /* Sources */,
+				E023433B21E71CCB001AE211 /* Frameworks */,
+				E023433C21E71CCB001AE211 /* Resources */,
+				3F0B2EB2F0F45C3EED602311 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = hockeyEloTracker;
+			productName = hockeyEloTracker;
+			productReference = E023433E21E71CCB001AE211 /* hockeyEloTracker.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E023435121E71CCC001AE211 /* hockeyEloTrackerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E023435E21E71CCC001AE211 /* Build configuration list for PBXNativeTarget "hockeyEloTrackerTests" */;
+			buildPhases = (
+				13677557DD1D9D1AC20E3ECB /* [CP] Check Pods Manifest.lock */,
+				E023434E21E71CCC001AE211 /* Sources */,
+				E023434F21E71CCC001AE211 /* Frameworks */,
+				E023435021E71CCC001AE211 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E023435421E71CCC001AE211 /* PBXTargetDependency */,
+			);
+			name = hockeyEloTrackerTests;
+			productName = hockeyEloTrackerTests;
+			productReference = E023435221E71CCC001AE211 /* hockeyEloTrackerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E023433621E71CCB001AE211 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = Solstice;
+				TargetAttributes = {
+					E023433D21E71CCB001AE211 = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					E023435121E71CCC001AE211 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = E023433D21E71CCB001AE211;
+					};
+				};
+			};
+			buildConfigurationList = E023433921E71CCB001AE211 /* Build configuration list for PBXProject "hockeyEloTracker" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E023433521E71CCB001AE211;
+			productRefGroup = E023433F21E71CCB001AE211 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E023433D21E71CCB001AE211 /* hockeyEloTracker */,
+				E023435121E71CCC001AE211 /* hockeyEloTrackerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E023433C21E71CCB001AE211 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E023434C21E71CCC001AE211 /* LaunchScreen.storyboard in Resources */,
+				E023434921E71CCC001AE211 /* Assets.xcassets in Resources */,
+				E023434721E71CCB001AE211 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E023435021E71CCC001AE211 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		13677557DD1D9D1AC20E3ECB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-hockeyEloTrackerTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3F0B2EB2F0F45C3EED602311 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-hockeyEloTracker/Pods-hockeyEloTracker-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ReSwift/ReSwift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReSwift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-hockeyEloTracker/Pods-hockeyEloTracker-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		68FA5B50D4B06357931504E7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-hockeyEloTracker-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E023433A21E71CCB001AE211 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E023434421E71CCB001AE211 /* ViewController.swift in Sources */,
+				E023436421E813C5001AE211 /* Action.swift in Sources */,
+				E023434221E71CCB001AE211 /* AppDelegate.swift in Sources */,
+				E0A8A62721E8557200367140 /* Reducer.swift in Sources */,
+				E023436221E811F6001AE211 /* State.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E023434E21E71CCC001AE211 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E023435721E71CCC001AE211 /* hockeyEloTrackerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E023435421E71CCC001AE211 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E023433D21E71CCB001AE211 /* hockeyEloTracker */;
+			targetProxy = E023435321E71CCC001AE211 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E023434521E71CCB001AE211 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E023434621E71CCB001AE211 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E023434A21E71CCC001AE211 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E023434B21E71CCC001AE211 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E023435921E71CCC001AE211 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E023435A21E71CCC001AE211 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E023435C21E71CCC001AE211 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF0D411BF948B2DF4EF80093 /* Pods-hockeyEloTracker.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 76YDMH49MP;
+				INFOPLIST_FILE = hockeyEloTracker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = solstice.hockeyEloTracker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E023435D21E71CCC001AE211 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0B6A3008301AC338466D218 /* Pods-hockeyEloTracker.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 76YDMH49MP;
+				INFOPLIST_FILE = hockeyEloTracker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = solstice.hockeyEloTracker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E023435F21E71CCC001AE211 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 46F1598A0D51D8867F7DF8B0 /* Pods-hockeyEloTrackerTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 76YDMH49MP;
+				INFOPLIST_FILE = hockeyEloTrackerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = solstice.hockeyEloTrackerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/hockeyEloTracker.app/hockeyEloTracker";
+			};
+			name = Debug;
+		};
+		E023436021E71CCC001AE211 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 119D017E2B6ED0C4DA1FA960 /* Pods-hockeyEloTrackerTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 76YDMH49MP;
+				INFOPLIST_FILE = hockeyEloTrackerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = solstice.hockeyEloTrackerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/hockeyEloTracker.app/hockeyEloTracker";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E023433921E71CCB001AE211 /* Build configuration list for PBXProject "hockeyEloTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E023435921E71CCC001AE211 /* Debug */,
+				E023435A21E71CCC001AE211 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E023435B21E71CCC001AE211 /* Build configuration list for PBXNativeTarget "hockeyEloTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E023435C21E71CCC001AE211 /* Debug */,
+				E023435D21E71CCC001AE211 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E023435E21E71CCC001AE211 /* Build configuration list for PBXNativeTarget "hockeyEloTrackerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E023435F21E71CCC001AE211 /* Debug */,
+				E023436021E71CCC001AE211 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E023433621E71CCB001AE211 /* Project object */;
+}
