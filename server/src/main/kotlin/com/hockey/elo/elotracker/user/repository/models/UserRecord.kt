@@ -8,5 +8,5 @@ data class UserRecord (
     var id: Long = 0L,
     var rfid: String = "",
     var name: String = "",
-    var email: String = ""
+    var email: String? = null
 )

@@ -17,25 +17,25 @@ import org.springframework.stereotype.Service
 class UserService(private val userRepository: UserRepository,
                   private val userStatsRepository: UserStatsRepository) {
 
-  fun createNewUser(userLoginSubmission: UserLoginSubmission): UserDTO {
+  fun createUser(userLoginSubmission: UserLoginSubmission): UserDTO {
     userRepository.findByRfid(userLoginSubmission.rfid) ?: run {
-      val userRecord = UserRecord()
-      userRecord.name = userLoginSubmission.name
-      userRecord.rfid = userLoginSubmission.rfid
+      val userRecord = UserRecord(
+              name = userLoginSubmission.name,
+              rfid = userLoginSubmission.rfid)
       val savedUser = userRepository.save(userRecord)
-      return UserDTO(savedUser.id, savedUser.name, savedUser.email)
+      return UserDTO(savedUser.id, savedUser.name)
     }
     throw UserAlreadyRegistered("user.rfid-in-use")
   }
 
   fun retrieveAllUsers(): List<UserDTO> {
-    val userRecordList = userRepository.findAll()
-    val userDTOs: MutableList<UserDTO> = mutableListOf()
-    for (userRecord in userRecordList) {
+    val userRecords = userRepository.findAll()
+    val userDTOs = mutableListOf<UserDTO>()
+    for (userRecord in userRecords) {
       val userStatsRecords = userStatsRepository.findByUserId(userRecord.id)
-      val userStatsDTOs: MutableList<UserStatsDTO> = mutableListOf()
-      for (stat in userStatsRecords) {
-        userStatsDTOs.add(convert(stat))
+      val userStatsDTOs = mutableListOf<UserStatsDTO>()
+      for (userStatRecord in userStatsRecords) {
+        userStatsDTOs.add(convert(userStatRecord))
       }
       userDTOs.add(UserDTO(userRecord.id, userRecord.name, userRecord.email, userStatsDTOs))
     }
@@ -48,8 +48,8 @@ class UserService(private val userRepository: UserRepository,
       val userRecord = userRecordOpt.get()
       val userStatsRecords = userStatsRepository.findByUserId(userRecord.id)
       val userStatsDTOs: MutableList<UserStatsDTO> = mutableListOf()
-      for (stat in userStatsRecords) {
-        userStatsDTOs.add(convert(stat))
+      for (userStatRecord in userStatsRecords) {
+        userStatsDTOs.add(convert(userStatRecord))
       }
       return UserDTO(userRecord.id, userRecord.name, userRecord.email, userStatsDTOs)
     } else {
@@ -57,38 +57,37 @@ class UserService(private val userRepository: UserRepository,
     }
   }
 
-  private fun convert(statsRecord: UserStatsRecord): UserStatsDTO {
-    return UserStatsDTO(statsRecord.id, statsRecord.gameType,
-            statsRecord.elo, statsRecord.wins, statsRecord.losses)
-  }
-
-  fun updateUserStats(userId: Long, opponentId: Long, gameType: GameType, didUserWin: Boolean) {
-    var userStatsRecord = UserStatsRecord()
-    var opponentStatsRecord = UserStatsRecord()
-
-    userStatsRecord.userId = userId
-    opponentStatsRecord.userId = opponentId
-
-    val optionalUserStatsRecord = userStatsRepository.findByUserIdAndGameType(userId, gameType)
-    val optionalOpponentStatsRecord = userStatsRepository.findByUserIdAndGameType(opponentId, gameType)
-    if (optionalUserStatsRecord != null && optionalOpponentStatsRecord != null) {
-      userStatsRecord = optionalUserStatsRecord
-      opponentStatsRecord = optionalOpponentStatsRecord
-    }
-
+  fun updateUserStats(userId: Long, opponentId: Long, gameType: GameType, didUserWin: Boolean): List<UserDTO> {
+    val userStatsRecord = userStatsOrDefault(userId, gameType)
+    val opponentStatsRecord = userStatsOrDefault(opponentId, gameType)
     if (didUserWin) {
       userStatsRecord.elo = EloRatings(userStatsRecord.elo).calcWinAgainst(opponentStatsRecord.elo)
       userStatsRecord.wins = userStatsRecord.wins + 1
       opponentStatsRecord.elo = EloRatings(opponentStatsRecord.elo).calcLossAgainst(userStatsRecord.elo)
       opponentStatsRecord.losses = opponentStatsRecord.losses + 1
     } else {
-      opponentStatsRecord.elo = EloRatings(opponentStatsRecord.elo).calcWinAgainst(userStatsRecord.elo)
-      opponentStatsRecord.wins = opponentStatsRecord.wins + 1
       userStatsRecord.elo = EloRatings(userStatsRecord.elo).calcLossAgainst(opponentStatsRecord.elo)
       userStatsRecord.losses = userStatsRecord.losses + 1
+      opponentStatsRecord.elo = EloRatings(opponentStatsRecord.elo).calcWinAgainst(userStatsRecord.elo)
+      opponentStatsRecord.wins = opponentStatsRecord.wins + 1
     }
     userStatsRepository.save(userStatsRecord)
     userStatsRepository.save(opponentStatsRecord)
+
+    val userDTOs = mutableListOf<UserDTO>()
+    userDTOs.add(retrieveUser(userId))
+    userDTOs.add(retrieveUser(opponentId))
+    return userDTOs
+  }
+
+  private fun convert(statsRecord: UserStatsRecord): UserStatsDTO {
+    return UserStatsDTO(statsRecord.id, statsRecord.gameType,
+            statsRecord.elo, statsRecord.wins, statsRecord.losses)
+  }
+
+  private fun userStatsOrDefault(userId: Long, gameType: GameType): UserStatsRecord {
+    val userStatsRecord = UserStatsRecord(userId = userId, gameType = gameType)
+    return userStatsRepository.findByUserIdAndGameType(userId, gameType) ?: userStatsRecord
   }
 
 }
