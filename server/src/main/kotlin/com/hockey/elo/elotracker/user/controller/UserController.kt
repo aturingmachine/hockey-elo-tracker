@@ -23,6 +23,6 @@ class UserController(
 
   @PostMapping("/api/v1/users")
   fun createNewUser(@RequestBody userLoginSubmission: UserLoginSubmission): UserDTO =
-      userService.createNewUser(userLoginSubmission)
+      userService.createUser(userLoginSubmission)
 
 }
