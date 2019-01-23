@@ -3,27 +3,60 @@ package com.hockey.elo.elotracker.match.service
 import com.hockey.elo.elotracker.match.exception.MatchNotFound
 import com.hockey.elo.elotracker.match.model.MatchCreationRequest
 import com.hockey.elo.elotracker.match.model.MatchDTO
-import com.hockey.elo.elotracker.match.model.MatchRecord
-import com.hockey.elo.elotracker.match.model.MatchUpdateRequest
+import com.hockey.elo.elotracker.match.repository.models.MatchRecord
+import com.hockey.elo.elotracker.match.model.ScoreUpdateRequest
 import com.hockey.elo.elotracker.match.repository.MatchRepository
 import org.springframework.stereotype.Service
 
 @Service
 class MatchService(private val matchRepository: MatchRepository) {
 
-    fun createMatch(matchCreationRequest: MatchCreationRequest): Long {
+    fun createMatch(matchCreationRequest: MatchCreationRequest): MatchDTO {
         val newMatchRecord = MatchRecord()
-        newMatchRecord.playerOneId = matchCreationRequest.playerOne
-        newMatchRecord.playerTwoId = matchCreationRequest.playerTwo
-        return matchRepository.save(newMatchRecord).id
+        newMatchRecord.gameType = matchCreationRequest.gameType
+        newMatchRecord.playerOneId = matchCreationRequest.playerOneId
+        newMatchRecord.playerTwoId = matchCreationRequest.playerTwoId
+        val savedMatchRecord = matchRepository.save(newMatchRecord)
+        return MatchDTO(savedMatchRecord.id,
+                savedMatchRecord.gameType,
+                savedMatchRecord.playerOneId,
+                savedMatchRecord.playerTwoId,
+                savedMatchRecord.playerOneScore,
+                savedMatchRecord.playerTwoScore,
+                savedMatchRecord.winnerId)
     }
 
-    fun updateMatch(id: Long, matchUpdateRequest: MatchUpdateRequest) {
+    fun retrieveMatch(id: Long): MatchDTO {
         if (matchRepository.findById(id).isPresent) {
             val matchRecord = matchRepository.findById(id).get()
-            matchRecord.playerOneScore = matchUpdateRequest.playerOneScore
-            matchRecord.playerTwoScore = matchUpdateRequest.playerTwoScore
-            matchRepository.save(matchRecord)
+            return MatchDTO(id, matchRecord.gameType, matchRecord.playerOneId, matchRecord.playerTwoId,
+                    matchRecord.playerOneScore, matchRecord.playerTwoScore, matchRecord.winnerId)
+        } else {
+            throw MatchNotFound("MatchRecord Id: $id Not Found")
+        }
+    }
+
+    fun retrieveAllMatches(): List<MatchDTO> {
+        val matchEntityList = matchRepository.findAll()
+        return matchEntityList.map { it ->
+            MatchDTO(it.id, it.gameType, it.playerOneId, it.playerTwoId,
+                    it.playerOneScore, it.playerTwoScore, it.winnerId)
+        }
+    }
+
+    fun updateScore(id: Long, scoreUpdateRequest: ScoreUpdateRequest): MatchDTO {
+        if (matchRepository.findById(id).isPresent) {
+            val matchRecord = matchRepository.findById(id).get()
+            matchRecord.playerOneScore = scoreUpdateRequest.playerOneScore
+            matchRecord.playerTwoScore = scoreUpdateRequest.playerTwoScore
+            val savedMatchRecord = matchRepository.save(matchRecord)
+            return MatchDTO(savedMatchRecord.id,
+                    savedMatchRecord.gameType,
+                    savedMatchRecord.playerOneId,
+                    savedMatchRecord.playerTwoId,
+                    savedMatchRecord.playerOneScore,
+                    savedMatchRecord.playerTwoScore,
+                    savedMatchRecord.winnerId)
         } else {
             throw MatchNotFound("MatchRecord Id: $id Not Found")
         }
@@ -37,6 +70,7 @@ class MatchService(private val matchRepository: MatchRepository) {
 
             return MatchDTO(
                     updatedMatchRecord.id,
+                    updatedMatchRecord.gameType,
                     updatedMatchRecord.playerOneId, updatedMatchRecord.playerTwoId,
                     updatedMatchRecord.playerOneScore, updatedMatchRecord.playerTwoScore,
                     updatedMatchRecord.winnerId)
@@ -45,21 +79,4 @@ class MatchService(private val matchRepository: MatchRepository) {
         }
     }
 
-    fun retrieveMatch(id: Long): MatchDTO {
-        if (matchRepository.findById(id).isPresent) {
-            val matchRecord = matchRepository.findById(id).get()
-            return MatchDTO(id, matchRecord.playerOneId, matchRecord.playerTwoId,
-                    matchRecord.playerOneScore, matchRecord.playerTwoScore, matchRecord.winnerId)
-        } else {
-            throw MatchNotFound("MatchRecord Id: $id Not Found")
-        }
-    }
-
-    fun retrieveAllMatches(): List<MatchDTO> {
-        val matchEntityList = matchRepository.findAll()
-        return matchEntityList.map { it ->
-            MatchDTO(it.id, it.playerOneId, it.playerTwoId,
-                    it.playerOneScore, it.playerTwoScore, it.winnerId)
-        }
-    }
 }

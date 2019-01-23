@@ -1,6 +1,6 @@
 package com.hockey.elo.elotracker.user.repository
 
-import com.hockey.elo.elotracker.user.model.UserRecord
+import com.hockey.elo.elotracker.user.repository.models.UserRecord
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

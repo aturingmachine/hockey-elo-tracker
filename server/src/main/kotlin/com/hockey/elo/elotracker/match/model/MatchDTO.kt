@@ -1,10 +1,13 @@
 package com.hockey.elo.elotracker.match.model
 
+import com.hockey.elo.elotracker.shared.models.GameType
+
 data class MatchDTO(
-        var id: Long,
-        var playerOneId: Long,
-        var playerTwoId: Long,
-        var playerOneScore: Int,
-        var playerTwoScore: Int,
-        var winnerId: Long
+        val id: Long,
+        val gameType: GameType,
+        val playerOneId: Long,
+        val playerTwoId: Long,
+        val playerOneScore: Int,
+        val playerTwoScore: Int,
+        val winnerId: Long
 )
