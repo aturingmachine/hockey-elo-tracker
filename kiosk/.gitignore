@@ -1,0 +1,9 @@
+node_modules/
+
+.idea
+*.iws
+*.iml
+*.ipr
+/server/out/
+
+*.DS_Store
