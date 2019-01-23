@@ -12,7 +12,7 @@ class EloHistoryController(private val eloHistoryService: EloHistoryService) {
 
   // TODO: this is untested
   @GetMapping("/api/v1/elo-history/{userId}")
-  fun retrieveEloHistorayForUser(@PathVariable("userId") userId: Long) : List<EloHistoryDTO> =
+  fun retrieveEloHistoryForUser(@PathVariable("userId") userId: Long) : List<EloHistoryDTO> =
       eloHistoryService.retrieveEloHistoryFor(userId = userId)
 
 }
