@@ -14,7 +14,7 @@ sudo raspi-config
     * 	•	Change the password
         * User: Pi    
         * Password: ELOg0@l
-    * Configure network automatically to join Solstice wifi network
+    * Configure network automatically to join a wifi network
     * Enable SSH access (for remote adjustments and maintenance)
     * Enable boot to desktop without logging in
     * Adjust GPU memory if needed
