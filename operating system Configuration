@@ -11,9 +11,9 @@ The OS will need to be configured to automatically launch the web browser after 
 * Install Raspbian light to a SD card
 * Sign in with (default user is ‘pi’ , and the password is ‘raspberry’) then run:
 sudo raspi-config
-    * 	•	Change the password
-        * User: Pi    
-        * Password: ELOg0@l
+    * Change the password
+        - User: Pi    
+        - Password: ELOg0@l
     * Configure network automatically to join a wifi network
     * Enable SSH access (for remote adjustments and maintenance)
     * Enable boot to desktop without logging in
