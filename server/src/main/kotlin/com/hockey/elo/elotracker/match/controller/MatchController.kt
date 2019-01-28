@@ -1,5 +1,6 @@
 package com.hockey.elo.elotracker.match.controller
 
+import com.hockey.elo.elotracker.elohistory.service.EloHistoryService
 import com.hockey.elo.elotracker.match.model.*
 import com.hockey.elo.elotracker.match.service.MatchService
 import com.hockey.elo.elotracker.user.service.UserService
@@ -10,7 +11,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class MatchController(
         private val matchService: MatchService,
-        private val userService: UserService
+        private val userService: UserService,
+        private val eloHistoryService: EloHistoryService
 ) {
 
   @PostMapping("/api/v1/matches")
@@ -45,18 +47,26 @@ class MatchController(
             didUserWin = didUserWin
     )
 
-    val userDTO = userDTOs.first { it -> it.id == matchDTO.playerOneId}
-    val userStatsDTO = userDTO.stats.first { it -> it.gameType == matchDTO.gameType }
-    val opponentDTO = userDTOs.first { it -> it.id == matchDTO.playerTwoId }
-    val opponentStats = opponentDTO.stats.first { it -> it.gameType == matchDTO.gameType }
+    val userDTO = userDTOs.first { it.id == matchDTO.playerOneId}
+    val userStatsDTO = userDTO.stats.first { it.gameType == matchDTO.gameType }
+    val opponentDTO = userDTOs.first { it.id == matchDTO.playerTwoId }
+    val opponentStatsDTO = opponentDTO.stats.first { it.gameType == matchDTO.gameType }
     val winnerName = if (didUserWin) userDTO.name else opponentDTO.name
+
+    eloHistoryService.createEloHistory(userId = userDTO.id,
+            gameType = matchDTO.gameType,
+            elo= userStatsDTO.elo)
+
+    eloHistoryService.createEloHistory(userId = opponentDTO.id,
+            gameType = matchDTO.gameType,
+            elo= opponentStatsDTO.elo)
 
     return MatchSummaryDTO(
             gameName = matchDTO.gameType.toString(),
             playerOne = UserMatchStatsDTO(userDTO.name,
                     userStatsDTO.elo, userStatsDTO.wins, userStatsDTO.losses),
             playerTwo = UserMatchStatsDTO(opponentDTO.name,
-                    opponentStats.elo, opponentStats.wins, opponentStats.losses),
+                    opponentStatsDTO.elo, opponentStatsDTO.wins, opponentStatsDTO.losses),
             playerOneScore = matchDTO.playerOneScore,
             playerTwoScore = matchDTO.playerTwoScore,
             winnerName = winnerName
