@@ -19,7 +19,7 @@ The package structure of this application is divided by feature, for example all
 The data models for this application can be found [here](https://github.com/aturingmachine/hockey-elo-tracker/blob/master/docs/data-models/data-models.md)
 
 ## Contributing
-First, check out the [Contributing Guidelines](https://github.com/aturingmachine/hockey-elo-tracker/blob/master/.github/CONTRIBUTING.MD).
+First, check out the [Contributing Guidelines](https://github.com/aturingmachine/hockey-elo-tracker/blob/master/.github/CONTRIBUTING.md).
 
 Then feel free to check out the [GitHub Project](https://github.com/aturingmachine/hockey-elo-tracker/projects/1) to pick up some work
 to get started!
