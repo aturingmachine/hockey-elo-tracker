@@ -4,7 +4,9 @@ This document should help you get set up with a local environment. Our stack is 
 
 - Spring Boot Kotlin
 - MySQL
-- VueJS (probably)
+- VueJS 
+- Electron 
+- iOS native 
 
 ## Getting started
 
@@ -15,8 +17,8 @@ First clone the repo:
 The repo contains two codebases:
 
 1. `server/` - The Kotlin REST API
-2. `app/` - The iOS (maybe) app
-
+2. `app/` - Electron kiosk application 
+3. `hockeyEloTracker-ios/` - Client iOS application
 
 Open the `elo-tracker/server` directory in IntelliJ (if thats what you use) to start importing the dependencies, or go about that how you normally would.
 

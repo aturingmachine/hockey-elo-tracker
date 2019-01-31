@@ -1,0 +1,15 @@
+title User Post /api/v1/users/
+
+Controller->Service: createUser(UserLoginRequest)
+Service->UserRepository: findByRfid UserRecord
+alt User Does Not Exist
+    UserRepository->Service: retrieve null
+    Service->Service: Create UserRecord
+    Service->UserRepository: Save UserRecord
+    UserRepository->Service: retrieve UserRecord
+    Service->Service: Convert UserRecord to User
+    Service->Controller: return User
+else User Does Exist
+    UserRepository->Service: retrieve UserRecord
+    Service->Controller: throw UserAlreadyRegistered
+end

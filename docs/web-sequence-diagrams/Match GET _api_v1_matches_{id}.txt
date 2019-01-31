@@ -1,0 +1,12 @@
+title Match GET /api/v1/matches/{id}
+
+Controller->Service: retrieveMatch
+Service->Repository: findById MatchRecord
+alt MatchRecord Found
+    Repository->Service: retrieves MatchRecord
+    Service->Service: converts MatchRecord to Match
+    Service->Controller: retrieves created Match
+else MatchRecord Not Found
+    Repository->Service: Returns null
+    Service->Controller: throws MatchNotFound exception
+end

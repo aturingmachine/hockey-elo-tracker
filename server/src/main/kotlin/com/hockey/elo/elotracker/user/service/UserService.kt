@@ -5,9 +5,9 @@ import com.hockey.elo.elotracker.user.exception.UserAlreadyRegistered
 import com.hockey.elo.elotracker.user.exception.UserNotFound
 import com.hockey.elo.elotracker.shared.models.GameType
 import com.hockey.elo.elotracker.user.repository.models.UserRecord
-import com.hockey.elo.elotracker.user.model.UserDTO
-import com.hockey.elo.elotracker.user.model.UserLoginSubmission
-import com.hockey.elo.elotracker.user.model.UserStatsDTO
+import com.hockey.elo.elotracker.user.model.User
+import com.hockey.elo.elotracker.user.model.UserLoginRequest
+import com.hockey.elo.elotracker.user.model.UserStats
 import com.hockey.elo.elotracker.user.repository.UserRepository
 import com.hockey.elo.elotracker.user.repository.UserStatsRepository
 import com.hockey.elo.elotracker.user.repository.models.UserStatsRecord
@@ -17,47 +17,47 @@ import org.springframework.stereotype.Service
 class UserService(private val userRepository: UserRepository,
                   private val userStatsRepository: UserStatsRepository) {
 
-  fun createUser(userLoginSubmission: UserLoginSubmission): UserDTO {
-    userRepository.findByRfid(userLoginSubmission.rfid) ?: run {
+  fun createUser(userLoginRequest: UserLoginRequest): User {
+    userRepository.findByRfid(userLoginRequest.rfid) ?: run {
       val userRecord = UserRecord(
-              name = userLoginSubmission.name,
-              rfid = userLoginSubmission.rfid)
+              name = userLoginRequest.name,
+              rfid = userLoginRequest.rfid)
       val savedUser = userRepository.save(userRecord)
-      return UserDTO(savedUser.id, savedUser.name)
+      return User(savedUser.id, savedUser.name)
     }
     throw UserAlreadyRegistered("user.rfid-in-use")
   }
 
-  fun retrieveAllUsers(): List<UserDTO> {
+  fun retrieveAllUsers(): List<User> {
     val userRecords = userRepository.findAll()
-    val userDTOs = mutableListOf<UserDTO>()
+    val users = mutableListOf<User>()
     for (userRecord in userRecords) {
       val userStatsRecords = userStatsRepository.findByUserId(userRecord.id)
-      val userStatsDTOs = mutableListOf<UserStatsDTO>()
+      val userStats = mutableListOf<UserStats>()
       for (userStatRecord in userStatsRecords) {
-        userStatsDTOs.add(convert(userStatRecord))
+        userStats.add(convert(userStatRecord))
       }
-      userDTOs.add(UserDTO(userRecord.id, userRecord.name, userRecord.email, userStatsDTOs))
+      users.add(User(userRecord.id, userRecord.name, userRecord.email, userStats))
     }
-    return userDTOs
+    return users
   }
 
-  fun retrieveUser(id: Long): UserDTO {
+  fun retrieveUser(id: Long): User {
     val userRecordOpt = userRepository.findById(id)
     if (userRecordOpt.isPresent) {
       val userRecord = userRecordOpt.get()
       val userStatsRecords = userStatsRepository.findByUserId(userRecord.id)
-      val userStatsDTOs: MutableList<UserStatsDTO> = mutableListOf()
+      val userStats: MutableList<UserStats> = mutableListOf()
       for (userStatRecord in userStatsRecords) {
-        userStatsDTOs.add(convert(userStatRecord))
+        userStats.add(convert(userStatRecord))
       }
-      return UserDTO(userRecord.id, userRecord.name, userRecord.email, userStatsDTOs)
+      return User(userRecord.id, userRecord.name, userRecord.email, userStats)
     } else {
       throw UserNotFound("user.id-not-found")
     }
   }
 
-  fun updateUserStats(userId: Long, opponentId: Long, gameType: GameType, didUserWin: Boolean): List<UserDTO> {
+  fun updateUserStats(userId: Long, opponentId: Long, gameType: GameType, didUserWin: Boolean): List<User> {
     val userStatsRecord = userStatsOrDefault(userId, gameType)
     val opponentStatsRecord = userStatsOrDefault(opponentId, gameType)
     if (didUserWin) {
@@ -74,14 +74,14 @@ class UserService(private val userRepository: UserRepository,
     userStatsRepository.save(userStatsRecord)
     userStatsRepository.save(opponentStatsRecord)
 
-    val userDTOs = mutableListOf<UserDTO>()
-    userDTOs.add(retrieveUser(userId))
-    userDTOs.add(retrieveUser(opponentId))
-    return userDTOs
+    val users = mutableListOf<User>()
+    users.add(retrieveUser(userId))
+    users.add(retrieveUser(opponentId))
+    return users
   }
 
-  private fun convert(statsRecord: UserStatsRecord): UserStatsDTO {
-    return UserStatsDTO(statsRecord.id, statsRecord.gameType,
+  private fun convert(statsRecord: UserStatsRecord): UserStats {
+    return UserStats(statsRecord.id, statsRecord.gameType,
             statsRecord.elo, statsRecord.wins, statsRecord.losses)
   }
 
