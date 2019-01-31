@@ -1,0 +1,24 @@
+title Match Put /api/v1/matches/{id}/winner/{winnerId}
+
+Controller->MatchService: completeMatch(id, winnerId)
+MatchService->MatchService: findById MatchRecord
+MatchService->MatchService: Updates MatchRecord winner
+MatchService->MatchService: converts MatchRecord to Match
+MatchService->Controller: retrieves Match
+
+Controller->UserService: updateUserStats
+UserService->UserService: Calculates new Elo
+UserService->UserService: Updates UserStats
+UserService->UserService: converts to User[]
+UserService->Controller: retrieve User[]
+
+Controller->EloHistoryService: createEloHistory(user)
+EloHistoryService->EloHistoryService: saves user history
+EloHistoryService->Controller: returns user history
+
+Controller->EloHistoryService: createEloHistory(opponent)
+EloHistoryService->EloHistoryService: saves opponent history
+EloHistoryService->Controller: returns opponent history
+
+Controller->Controller: Converts Match and Stats into Summary
+Controller->Controller: Returns Summary

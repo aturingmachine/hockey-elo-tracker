@@ -1,0 +1,13 @@
+title Match Put /api/v1/matches/{id}/score
+
+Controller->Service: updateScore(id, ScoreUpdateRequest)
+Service->Repository: findById MatchRecord
+alt MatchRecord Found
+    Repository->Service: retrieves MatchRecord
+    Service->Service: Updates MatchRecord
+    Service->Service: converts MatchRecord to Match
+    Service->Controller: retrieves Match
+else MatchRecord NotFound
+    Repository->Service: retrieves null
+    Service->Controller: Throws MatchNotFound Exception
+end

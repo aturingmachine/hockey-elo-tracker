@@ -1,0 +1,12 @@
+title User Get /api/v1/users
+
+Controller->Service: retrieveAllUsers
+Service->Service: findAll UserRecord[]
+Service->UserRepository: request All UserRecord[]
+UserRepository->Service: retrieve All UserRecord[]
+loop Get Stats
+    Service->UserStatsRepository: request UserStatsRecord for user
+    UserStatsRepository->Service: return UserStatsRecord
+end
+Service->Service: Aggregate Users and Stats
+Service->Controller: return User[]

@@ -1,6 +1,6 @@
 package com.hockey.elo.elotracker.match.model
 
-data class UserMatchStatsDTO (
+data class UserMatchStats (
         val name: String,
         val elo: Int,
         val wins: Int,

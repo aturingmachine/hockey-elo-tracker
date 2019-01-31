@@ -1,10 +1,11 @@
 package com.hockey.elo.elotracker.match.model
 
-data class MatchSummaryDTO (
+data class MatchSummary (
         val gameName: String,
-        val playerOne: UserMatchStatsDTO,
-        val playerTwo: UserMatchStatsDTO,
+        val playerOne: UserMatchStats,
+        val playerTwo: UserMatchStats,
         val playerOneScore: Int,
         val playerTwoScore: Int,
         val winnerName: String
 )
+

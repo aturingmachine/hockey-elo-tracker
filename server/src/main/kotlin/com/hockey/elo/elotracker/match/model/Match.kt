@@ -2,7 +2,7 @@ package com.hockey.elo.elotracker.match.model
 
 import com.hockey.elo.elotracker.shared.models.GameType
 
-data class MatchDTO(
+data class Match(
         val id: Long,
         val gameType: GameType,
         val playerOneId: Long,

@@ -1,0 +1,8 @@
+title Match POST /api/v1/matches
+
+Controller->Service: createMatch with MatchCreation Request
+Service->Service: Create MatchRecord
+Service->Repository: save MatchRecord
+Repository->Service: retrieves MatchRecord
+Service->Service: converts MatchRecord to Match
+Service->Controller: retrieves created Match

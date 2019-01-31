@@ -2,7 +2,7 @@ package com.hockey.elo.elotracker.match.service
 
 import com.hockey.elo.elotracker.match.exception.MatchNotFound
 import com.hockey.elo.elotracker.match.model.MatchCreationRequest
-import com.hockey.elo.elotracker.match.model.MatchDTO
+import com.hockey.elo.elotracker.match.model.Match
 import com.hockey.elo.elotracker.match.repository.models.MatchRecord
 import com.hockey.elo.elotracker.match.model.ScoreUpdateRequest
 import com.hockey.elo.elotracker.match.repository.MatchRepository
@@ -11,23 +11,23 @@ import org.springframework.stereotype.Service
 @Service
 class MatchService(private val matchRepository: MatchRepository) {
 
-    fun createMatch(matchCreationRequest: MatchCreationRequest): MatchDTO {
+    fun createMatch(matchCreationRequest: MatchCreationRequest): Match {
         val newMatchRecord = MatchRecord(
                 gameType = matchCreationRequest.gameType,
                 playerOneId = matchCreationRequest.playerOneId,
                 playerTwoId = matchCreationRequest.playerTwoId)
         val savedMatchRecord = matchRepository.save(newMatchRecord)
-        return MatchDTO(savedMatchRecord.id,
+        return Match(savedMatchRecord.id,
                 savedMatchRecord.gameType,
                 savedMatchRecord.playerOneId, savedMatchRecord.playerTwoId,
                 savedMatchRecord.playerOneScore, savedMatchRecord.playerTwoScore,
                 savedMatchRecord.winnerId)
     }
 
-    fun retrieveMatch(id: Long): MatchDTO {
+    fun retrieveMatch(id: Long): Match {
         if (matchRepository.findById(id).isPresent) {
             val matchRecord = matchRepository.findById(id).get()
-            return MatchDTO(id, matchRecord.gameType,
+            return Match(id, matchRecord.gameType,
                     matchRecord.playerOneId, matchRecord.playerTwoId,
                     matchRecord.playerOneScore, matchRecord.playerTwoScore,
                     matchRecord.winnerId)
@@ -36,15 +36,15 @@ class MatchService(private val matchRepository: MatchRepository) {
         }
     }
 
-    fun retrieveAllMatches(): List<MatchDTO> {
+    fun retrieveAllMatches(): List<Match> {
         val matchEntityList = matchRepository.findAll()
-        return matchEntityList.map { it ->
-            MatchDTO(it.id, it.gameType, it.playerOneId, it.playerTwoId,
+        return matchEntityList.map {
+            Match(it.id, it.gameType, it.playerOneId, it.playerTwoId,
                     it.playerOneScore, it.playerTwoScore, it.winnerId)
         }
     }
 
-    fun updateScore(id: Long, scoreUpdateRequest: ScoreUpdateRequest): MatchDTO {
+    fun updateScore(id: Long, scoreUpdateRequest: ScoreUpdateRequest): Match {
         if (matchRepository.findById(id).isPresent) {
             val matchRecord = matchRepository.findById(id).get()
             val updatedRecord = MatchRecord(
@@ -54,7 +54,7 @@ class MatchService(private val matchRepository: MatchRepository) {
                     scoreUpdateRequest.playerOneScore, scoreUpdateRequest.playerTwoScore,
                     matchRecord.winnerId)
             val savedMatchRecord = matchRepository.save(updatedRecord)
-            return MatchDTO(savedMatchRecord.id,
+            return Match(savedMatchRecord.id,
                     savedMatchRecord.gameType,
                     savedMatchRecord.playerOneId, savedMatchRecord.playerTwoId,
                     savedMatchRecord.playerOneScore, savedMatchRecord.playerTwoScore,
@@ -64,7 +64,7 @@ class MatchService(private val matchRepository: MatchRepository) {
         }
     }
 
-    fun completeMatch(id: Long, winnerId: Long): MatchDTO {
+    fun completeMatch(id: Long, winnerId: Long): Match {
         if (matchRepository.findById(id).isPresent) {
             val matchRecord = matchRepository.findById(id).get()
             val updatedRecord = MatchRecord(
@@ -75,7 +75,7 @@ class MatchService(private val matchRepository: MatchRepository) {
                     winnerId)
             val updatedMatchRecord = matchRepository.save(updatedRecord)
 
-            return MatchDTO(
+            return Match(
                     updatedMatchRecord.id,
                     updatedMatchRecord.gameType,
                     updatedMatchRecord.playerOneId, updatedMatchRecord.playerTwoId,
