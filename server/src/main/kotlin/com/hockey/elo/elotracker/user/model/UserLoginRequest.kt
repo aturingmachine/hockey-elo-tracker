@@ -2,7 +2,7 @@ package com.hockey.elo.elotracker.user.model
 
 import javax.validation.constraints.NotBlank
 
-data class UserLoginSubmission(
+data class UserLoginRequest(
         @NotBlank
         val name: String,
 

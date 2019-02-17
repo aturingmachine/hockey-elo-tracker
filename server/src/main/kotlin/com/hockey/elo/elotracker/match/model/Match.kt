@@ -1,15 +1,13 @@
 package com.hockey.elo.elotracker.match.model
 
 import com.hockey.elo.elotracker.shared.models.GameType
-import javax.validation.constraints.NotBlank
 
-data class MatchCreationRequest(
-        @NotBlank
+data class Match(
+        val id: Long,
+        val gameType: GameType,
         val playerOneId: Long,
-
-        @NotBlank
         val playerTwoId: Long,
-
-        @NotBlank
-        val gameType: GameType
+        val playerOneScore: Int,
+        val playerTwoScore: Int,
+        val winnerId: Long
 )

@@ -1,17 +1,17 @@
 package com.hockey.elo.elotracker.elohistory.controller
 
-import com.hockey.elo.elotracker.elohistory.model.EloHistoryRecord
+import com.hockey.elo.elotracker.elohistory.model.EloHistory
 import com.hockey.elo.elotracker.elohistory.service.EloHistoryService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import com.hockey.elo.elotracker.shared.models.GameType
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class EloHistoryController(private val eloHistoryService: EloHistoryService) {
 
-  // TODO: this is untested
-  @GetMapping("/api/v1/elo-history/{userId}")
-  fun retrieveEloHistoryForUser(@PathVariable("userId") userId: Long) : List<EloHistoryRecord> =
-      eloHistoryService.retrieveEloHistoryFor(userId = userId)
+  @GetMapping("/api/v1/users/{userId}/elo-history")
+  fun retrieveEloHistoryForUser(
+          @PathVariable("userId") userId: Long,
+          @RequestParam("gameType") gameType: GameType): List<EloHistory> =
+          eloHistoryService.retrieveEloHistoryFor(userId = userId, gameType = gameType)
 
 }

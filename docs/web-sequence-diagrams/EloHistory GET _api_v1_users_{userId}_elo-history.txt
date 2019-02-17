@@ -1,0 +1,7 @@
+title EloHistory GET /api/v1/users/{userId}/elo-history
+
+Controller->Service: RetrieveEloHistory
+Service->Repository: findAllByUserIdAndGameType()
+Repository->Service: retrieves EloHistoryRecord[]
+Service->Service: Filters last 6 months
+Service->Controller: retrieves EloHistory[]

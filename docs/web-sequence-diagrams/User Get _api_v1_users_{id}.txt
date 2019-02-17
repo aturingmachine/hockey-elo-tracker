@@ -1,0 +1,9 @@
+title User Get /api/v1/users/{id}
+
+Controller->Service: retrieveUser(id)
+Service->UserRepository: findById UserRecord
+UserRepository->Service: retrieve UserRecord
+Service->UserStatsRepository: request UserStatsRecord for user
+UserStatsRepository->Service: return UserStatsRecord
+Service->Service: Aggregate User with Stats
+Service->Controller: return User
