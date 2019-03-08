@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*
 
 @Validated
 @RestController
+@CrossOrigin(origins = ["http://localhost:8081", "http://localhost:9080"])
 class MatchController(
         private val matchService: MatchService,
         private val userService: UserService,

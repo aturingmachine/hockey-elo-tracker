@@ -13,7 +13,7 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-function createWindow () {
+function createWindow() {
   /**
    * Initial window options
    */
@@ -46,9 +46,11 @@ app.on('activate', () => {
 
 ipcMain.on('read-sign-in', (event, arg) => {
   console.log('attempting to read sign in');
-  if (process.env.NODE_ENV === 'development') {
-    event.sender.send('sign-in-read', '99999999999');
-  }
+  setTimeout(() => {
+    if (process.env.NODE_ENV === 'development') {
+      event.sender.send('sign-in-read', '99999999999');
+    }
+  }, 1000);
 });
 
 /**

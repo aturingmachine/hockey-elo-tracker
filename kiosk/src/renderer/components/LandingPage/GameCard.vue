@@ -11,7 +11,12 @@
 <script>
 export default {
   data: () => {
-    return {};
+    return {
+      gameTypes: {
+        bubble_hockey: "BUBBLE_HOCKEY",
+        ping_pong: "PING_PONG"
+      }
+    };
   },
   props: {
     game: {
@@ -20,7 +25,8 @@ export default {
   },
   methods: {
     startGame() {
-      this.$emit('startGame', this.game)
+      console.log(this.game.replace(' ', '_').toUpperCase())
+      this.$emit("startGame", this.gameTypes[this.game.replace(' ', '_')]);
     }
   }
 };

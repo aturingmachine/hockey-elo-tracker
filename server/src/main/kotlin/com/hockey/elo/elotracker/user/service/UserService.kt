@@ -28,6 +28,12 @@ class UserService(private val userRepository: UserRepository,
     throw UserAlreadyRegistered("user.rfid-in-use")
   }
 
+  fun loginUser(rfid: String): UserRecord {
+
+      val record = userRepository.findByRfid(rfid)
+      if (record != null) return record else throw UserNotFound("user.notFound")
+  }
+
   fun retrieveAllUsers(): List<User> {
     val userRecords = userRepository.findAll()
     val users = mutableListOf<User>()

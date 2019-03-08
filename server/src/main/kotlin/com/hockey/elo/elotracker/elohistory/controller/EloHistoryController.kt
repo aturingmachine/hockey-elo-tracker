@@ -6,6 +6,7 @@ import com.hockey.elo.elotracker.shared.models.GameType
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@CrossOrigin(origins = ["http://localhost:8081", "http://localhost:9080"])
 class EloHistoryController(private val eloHistoryService: EloHistoryService) {
 
   @GetMapping("/api/v1/users/{userId}/elo-history")
