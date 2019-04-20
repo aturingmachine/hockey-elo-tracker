@@ -112,9 +112,11 @@
 <script>
 import { ipcRenderer } from "electron";
 import { http } from "../config/http.js";
-
 import GameCard from "./LandingPage/GameCard.vue";
 import SignIn from "./LandingPage/SignIn.vue";
+
+const SerialPort = require('serialport');
+const Readline = require('@serialport/parser-readline')
 
 export default {
   data: () => {
@@ -179,6 +181,24 @@ export default {
     startGame(gameType) {
       this.selectedGame = gameType;
       console.log(gameType);
+
+      SerialPort.list((err, ports) => {
+        if (err) {
+          console.log(err);
+        }
+        const scannerPort = ports.find((port) => {
+          return port.serialNumber === 'A906XU0J';
+        });
+
+        var port = new SerialPort(scannerPort.comName);
+        const parser = port.pipe(new Readline({
+          delimiter: '\r\n' 
+        }));
+
+        port.on('open', () => {
+          parser.on('data', this.signIn); 
+        });
+      });
     },
 
     readId() {
@@ -188,6 +208,11 @@ export default {
 
     //this endpoint needs to be updated
     signIn(id) {
+      console.log('signIn', id);
+      if (id === 'RFID is ready to read') {
+        return;
+      }
+
       http
         .get(`/v1/users/login/${id}`)
         .then(response => {
