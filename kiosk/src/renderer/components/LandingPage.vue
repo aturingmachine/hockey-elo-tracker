@@ -207,28 +207,29 @@ export default {
     },
 
     //this endpoint needs to be updated
-    signIn(id) {
-      console.log('signIn', id);
-      if (id === 'RFID is ready to read') {
-        return;
-      }
+    signIn(auth) {
+      const card = JSON.parse(auth);
+      console.log(card);
+      if (card.payload.cardCode) {
+        const cardCode = card.payload.cardCode;
 
-      http
-        .get(`/v1/users/login/${id}`)
-        .then(response => {
-          console.log(response);
-          if (!this.playerOne) {
-            this.playerOne = response.data;
-          } else {
-            this.playerTwo = response.data;
-          }
-          this.loadingStates.readingSignIn = false;
-        })
-        .catch(err => {
-          console.log(err);
-          this.needsRegister = id;
-          this.loadingStates.readingSignIn = false;
-        });
+        http
+          .get(`/v1/users/login/${cardCode}`)
+          .then(response => {
+            console.log(response);
+            if (!this.playerOne) {
+              this.playerOne = response.data;
+            } else {
+              this.playerTwo = response.data;
+            }
+            this.loadingStates.readingSignIn = false;
+          })
+          .catch(err => {
+            console.log(err);
+            this.needsRegister = cardCode;
+            this.loadingStates.readingSignIn = false;
+          });
+      }
     },
 
     register() {
