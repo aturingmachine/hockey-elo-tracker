@@ -1,0 +1,7 @@
+package com.hockey.elo.elotracker.configurations
+
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
+import org.springframework.stereotype.Component
+
+@Component
+class RequestAwareAuthenticationFailureHandler : SimpleUrlAuthenticationFailureHandler()
