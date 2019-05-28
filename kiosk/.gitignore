@@ -1,0 +1,10 @@
+node_modules/
+
+.idea
+*.iws
+*.iml
+*.ipr
+/server/out/
+dist/*
+
+*.DS_Store
