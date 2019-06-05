@@ -48,7 +48,13 @@ ipcMain.on('read-sign-in', (event, arg) => {
   console.log('attempting to read sign in');
   setTimeout(() => {
     if (process.env.NODE_ENV === 'development') {
-      event.sender.send('sign-in-read', '99999999999');
+      console.log('detected dev process')
+      const fakeDevAuth = {
+        payload: {
+          cardCode: Math.floor(Math.random() * (500 - 0))
+        }
+      }
+      event.sender.send('sign-in-read', JSON.stringify(fakeDevAuth));
     }
   }, 1000);
 });
