@@ -8,7 +8,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @Validated
-@CrossOrigin(origins = ["http://localhost:8081", "http://localhost:9080"])
+// @CrossOrigin(origins = ["http://localhost:8081", "http://localhost:9080"])
 @RestController
 class UserController(
     private val userService: UserService
