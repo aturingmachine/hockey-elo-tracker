@@ -1,7 +1,5 @@
 <template>
-  <div class="pt-4">
-    <!-- <v-btn @click="reset()">Dev Reset </v-btn> -->
-    <!-- <main> -->
+  <div class>
     <v-content v-if="!hasLoggedIn">
       <v-container fluid>
         <v-layout row wrap align-content-center>
@@ -21,9 +19,7 @@
       <v-content v-if="!selectedGame && !checkLoadingStates()">
         <v-container fluid>
           <v-layout row wrap align-content-center>
-            <v-flex xs4></v-flex>
-            <v-flex xs4 class="title pb-3 text-xs-center">Choose A Game</v-flex>
-            <v-flex xs4></v-flex>
+            <v-flex xs12 class="display-2 pb-5 text-xs-center">What Are We Playing Today?</v-flex>
 
             <game-card :game="'ping pong'" @startGame="startGame"></game-card>
 
@@ -43,55 +39,29 @@
       </v-content>
 
       <v-content v-if="needsRegister && !checkLoadingStates()">
-        <v-container fluid>
-          <v-layout row wrap align-content-center>
-            <v-flex xs4>
-              <v-text-field v-model="registeringName" label="Name"></v-text-field>
-            </v-flex>
-
-            <v-flex xs2></v-flex>
-
-            <v-flex xs4>
-              <v-btn @click="register()">Register</v-btn>
-            </v-flex>
-          </v-layout>
-        </v-container>
+        <register-user @register="register"></register-user>
       </v-content>
 
       <v-content v-if="playerOne && playerTwo && !inProgressMatch && !checkLoadingStates()">
-        <h2></h2>
+        <h1>{{ playerOne.name }} VS {{ playerTwo.name }}</h1>
         <v-btn @click="startMatch()">Start Match</v-btn>
       </v-content>
 
       <v-content v-if="inProgressMatch && !matchSummary && !checkLoadingStates()">
-        <v-container fluid>
-          <v-layout row wrap align-center>
-            <v-flex xs12>
-              <h2 class="mb-2">{{ `${playerOne.name} VS ${playerTwo.name}` }}</h2>
-            </v-flex>
-            <v-flex xs4>
-              <v-text-field
-                v-model="scores.playerOne"
-                type="number"
-                :label="`${playerOne.name}'s Score`"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs4>
-              <v-btn @click="completeMatch()">Finish Match</v-btn>
-            </v-flex>
-            <v-flex xs4>
-              <v-text-field
-                v-model="scores.playerTwo"
-                type="number"
-                :label="`${playerTwo.name}'s Score`"
-              ></v-text-field>
-            </v-flex>
-          </v-layout>
-        </v-container>
+        <match-in-progress
+          :playerOne="playerOne"
+          :playerTwo="playerTwo"
+          @completeMatch="completeMatch"
+        ></match-in-progress>
       </v-content>
 
       <v-content v-if="matchSummary && !checkLoadingStates()">
-        <match-summary :matchSummary="matchSummary" :playerOne="playerOne" :playerTwo="playerTwo"></match-summary>
+        <match-summary
+          :matchSummary="matchSummary"
+          :playerOne="playerOne"
+          :playerTwo="playerTwo"
+          @newGame="newGame"
+        ></match-summary>
       </v-content>
 
       <v-content v-if="checkLoadingStates()">
@@ -100,7 +70,6 @@
         <h2 v-if="loadingStates.registeringUser">Registering...</h2>
         <v-progress-linear :indeterminate="true"></v-progress-linear>
       </v-content>
-      <!-- </main> -->
     </div>
   </div>
 </template>
@@ -110,7 +79,9 @@ import { ipcRenderer } from "electron";
 import { http } from "../config/http.js";
 import GameCard from "./LandingPage/GameCard.vue";
 import SignIn from "./LandingPage/SignIn.vue";
-import MatchSummary from "./LandingPage/MatchSummary";
+import MatchSummary from "./LandingPage/MatchSummary.vue";
+import MatchInProgress from "./LandingPage/MatchInProgress.vue";
+import RegisterUser from "./LandingPage/RegisterUser.vue";
 
 const SerialPort = require("serialport");
 const Readline = require("@serialport/parser-readline");
@@ -127,13 +98,8 @@ export default {
       playerOneElo: null,
       playerTwoElo: null,
       needsRegister: false,
-      registeringName: null,
       inProgressMatch: null,
       matchSummary: null,
-      scores: {
-        playerOne: 0,
-        playerTwo: 0
-      },
       loadingStates: {
         creatingMatch: false,
         readingSignIn: false,
@@ -148,30 +114,17 @@ export default {
     };
   },
 
-  watch: {
-    // playerTwo() {
-    //   this.fetchUserHistory();
-    // }
-  },
+  watch: {},
 
   components: {
     gameCard: GameCard,
     signIn: SignIn,
-    matchSummary: MatchSummary
+    matchSummary: MatchSummary,
+    matchInProgress: MatchInProgress,
+    registerUser: RegisterUser
   },
 
   methods: {
-    reset() {
-      (this.selectedGame = null),
-        (this.playerOneRFID = null),
-        (this.playerTwoRFID = null),
-        (this.playerOne = null),
-        (this.playerTwo = null),
-        (this.needsRegister = false),
-        (this.registeringName = null),
-        (this.hasLoggedIn = false);
-    },
-
     open(link) {
       require("electron").shell.openExternal(link);
     },
@@ -235,6 +188,7 @@ export default {
       ipcRenderer.send("read-sign-in");
     },
 
+    //I am not sure if the below comment is valid still
     //this endpoint needs to be updated
     signIn(auth) {
       console.log(auth);
@@ -262,18 +216,17 @@ export default {
       }
     },
 
-    register() {
+    register(registeringName) {
       this.loadingStates.registeringUser = true;
       http
         .post("/api/v1/users", {
-          name: this.registeringName,
+          name: registeringName,
           rfid: this.needsRegister
         })
         .then(response => {
           console.log(response);
           console.log("registered");
           this.needsRegister = null;
-          this.registeringName = null;
           if (!this.playerOne) {
             this.playerOne = response.data;
           } else {
@@ -316,16 +269,16 @@ export default {
         });
     },
 
-    completeMatch() {
+    completeMatch(scores) {
       this.loadingStates.completingMatch = true;
       http
         .put(`/api/v1/matches/${this.inProgressMatch.id}/score`, {
-          playerOneScore: this.scores.playerOne,
-          playerTwoScore: this.scores.playerTwo
+          playerOneScore: scores.playerOne,
+          playerTwoScore: scores.playerTwo
         })
         .then(response => {
           let winnerId =
-            this.scores.playerOne > this.scores.playerTwo
+            scores.playerOne > scores.playerTwo
               ? this.playerOne.id
               : this.playerTwo.id;
           http
@@ -345,12 +298,34 @@ export default {
           console.log(err);
           this.loadingStates.completingMatch = false;
         });
+    },
+
+    newGame() {
+      (this.selectedGame = null),
+        (this.playerOneRFID = null),
+        (this.playerTwoRFID = null),
+        (this.playerOne = null),
+        (this.playerTwo = null),
+        (this.playerOneElo = null),
+        (this.playerTwoElo = null),
+        (this.needsRegister = false),
+        (this.registeringName = null),
+        (this.inProgressMatch = null),
+        (this.matchSummary = null),
+        (this.loadingStates = {
+          creatingMatch: false,
+          readingSignIn: false,
+          registeringUser: false,
+          completingMatch: false
+        });
     }
   },
 
   mounted() {
-    var b = document.cookie.match("(^|[^;]+)\\s*JSESSIONID\\s*=\\s*([^;]+)");
-    if (b) {
+    const sessionId = document.cookie.match(
+      "(^|[^;]+)\\s*JSESSIONID\\s*=\\s*([^;]+)"
+    );
+    if (sessionId) {
       this.hasLoggedIn = true;
     }
     //catch the sign in event and set the player ids to the response
@@ -358,7 +333,7 @@ export default {
       console.log("hit renderer");
       if (this.playerOneRFID) {
         console.log("setting two");
-        this.playerTwoRFID = arg; //the concat is for testing in dev
+        this.playerTwoRFID = arg;
         this.signIn(arg);
       } else {
         console.log("setting one");

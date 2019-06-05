@@ -1,7 +1,10 @@
 <template>
   <v-app dark>
     <v-card>
-      <v-card-title @click="reset()" class="title orange darken-4 white--text font-weight-bold">RĀNCŌR</v-card-title>
+      <v-card-title
+        @click="reset()"
+        class="title orange darken-4 white--text font-weight-bold"
+      >RĀNCŌR</v-card-title>
     </v-card>
     <landing-page></landing-page>
 
@@ -30,8 +33,8 @@ export default {
   methods: {
     //this is mostly here for devs
     reset() {
-      location.reload()
-    },
+      location.reload();
+    }
   }
 };
 </script>
