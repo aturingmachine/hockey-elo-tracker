@@ -83,7 +83,7 @@ export default {
 
   methods: {
     newGame() {
-      //TODO
+      this.$emit("newGame");
     }
   }
 };

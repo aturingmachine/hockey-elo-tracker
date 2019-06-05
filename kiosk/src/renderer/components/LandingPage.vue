@@ -19,9 +19,7 @@
       <v-content v-if="!selectedGame && !checkLoadingStates()">
         <v-container fluid>
           <v-layout row wrap align-content-center>
-            <!-- <v-flex xs2></v-flex> -->
             <v-flex xs12 class="display-2 pb-5 text-xs-center">What Are We Playing Today?</v-flex>
-            <!-- <v-flex xs2></v-flex> -->
 
             <game-card :game="'ping pong'" @startGame="startGame"></game-card>
 
@@ -41,19 +39,7 @@
       </v-content>
 
       <v-content v-if="needsRegister && !checkLoadingStates()">
-        <v-container fluid>
-          <v-layout row wrap align-content-center>
-            <v-flex xs4>
-              <v-text-field v-model="registeringName" label="Name"></v-text-field>
-            </v-flex>
-
-            <v-flex xs2></v-flex>
-
-            <v-flex xs4>
-              <v-btn @click="register()">Register</v-btn>
-            </v-flex>
-          </v-layout>
-        </v-container>
+        <register-user @register="register"></register-user>
       </v-content>
 
       <v-content v-if="playerOne && playerTwo && !inProgressMatch && !checkLoadingStates()">
@@ -70,7 +56,12 @@
       </v-content>
 
       <v-content v-if="matchSummary && !checkLoadingStates()">
-        <match-summary :matchSummary="matchSummary" :playerOne="playerOne" :playerTwo="playerTwo"></match-summary>
+        <match-summary
+          :matchSummary="matchSummary"
+          :playerOne="playerOne"
+          :playerTwo="playerTwo"
+          @newGame="newGame"
+        ></match-summary>
       </v-content>
 
       <v-content v-if="checkLoadingStates()">
@@ -90,6 +81,7 @@ import GameCard from "./LandingPage/GameCard.vue";
 import SignIn from "./LandingPage/SignIn.vue";
 import MatchSummary from "./LandingPage/MatchSummary.vue";
 import MatchInProgress from "./LandingPage/MatchInProgress.vue";
+import RegisterUser from "./LandingPage/RegisterUser.vue";
 
 const SerialPort = require("serialport");
 const Readline = require("@serialport/parser-readline");
@@ -106,7 +98,6 @@ export default {
       playerOneElo: null,
       playerTwoElo: null,
       needsRegister: false,
-      registeringName: null,
       inProgressMatch: null,
       matchSummary: null,
       loadingStates: {
@@ -129,7 +120,8 @@ export default {
     gameCard: GameCard,
     signIn: SignIn,
     matchSummary: MatchSummary,
-    matchInProgress: MatchInProgress
+    matchInProgress: MatchInProgress,
+    registerUser: RegisterUser
   },
 
   methods: {
@@ -224,18 +216,17 @@ export default {
       }
     },
 
-    register() {
+    register(registeringName) {
       this.loadingStates.registeringUser = true;
       http
         .post("/api/v1/users", {
-          name: this.registeringName,
+          name: registeringName,
           rfid: this.needsRegister
         })
         .then(response => {
           console.log(response);
           console.log("registered");
           this.needsRegister = null;
-          this.registeringName = null;
           if (!this.playerOne) {
             this.playerOne = response.data;
           } else {
@@ -307,6 +298,26 @@ export default {
           console.log(err);
           this.loadingStates.completingMatch = false;
         });
+    },
+
+    newGame() {
+      (this.selectedGame = null),
+        (this.playerOneRFID = null),
+        (this.playerTwoRFID = null),
+        (this.playerOne = null),
+        (this.playerTwo = null),
+        (this.playerOneElo = null),
+        (this.playerTwoElo = null),
+        (this.needsRegister = false),
+        (this.registeringName = null),
+        (this.inProgressMatch = null),
+        (this.matchSummary = null),
+        (this.loadingStates = {
+          creatingMatch: false,
+          readingSignIn: false,
+          registeringUser: false,
+          completingMatch: false
+        });
     }
   },
 
@@ -322,7 +333,7 @@ export default {
       console.log("hit renderer");
       if (this.playerOneRFID) {
         console.log("setting two");
-        this.playerTwoRFID = arg; //the concat is for testing in dev
+        this.playerTwoRFID = arg;
         this.signIn(arg);
       } else {
         console.log("setting one");
