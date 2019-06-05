@@ -1,10 +1,11 @@
 <template>
   <v-flex xs5>
-    <v-card @click="startGame()">
-      <v-card-title class="text-xs-center title">
-        {{ game.split(' ').map(i => i.charAt(0).toUpperCase() + i.slice(1)).join(' ') }}
-      </v-card-title>
-    </v-card>
+    <v-btn
+      @click="startGame()"
+      class="text-xs-center title pa-5 orange darken-4"
+      large
+      block
+    >{{ game.split(' ').map(i => i.charAt(0).toUpperCase() + i.slice(1)).join(' ') }}</v-btn>
   </v-flex>
 </template>
 
@@ -25,8 +26,8 @@ export default {
   },
   methods: {
     startGame() {
-      console.log(this.game.replace(' ', '_').toUpperCase())
-      this.$emit("startGame", this.gameTypes[this.game.replace(' ', '_')]);
+      console.log(this.game.replace(" ", "_").toUpperCase());
+      this.$emit("startGame", this.gameTypes[this.game.replace(" ", "_")]);
     }
   }
 };
