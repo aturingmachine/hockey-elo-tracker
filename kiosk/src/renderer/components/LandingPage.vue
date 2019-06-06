@@ -16,7 +16,7 @@
     </v-content>
 
     <div v-if="hasLoggedIn">
-      <v-content v-if="!selectedGame && !checkLoadingStates()">
+      <v-content v-if="!selectedGame && !checkLoadingStates()" class="fade-in">
         <v-container fluid>
           <v-layout row wrap align-content-center>
             <v-flex xs12 class="display-2 pb-5 text-xs-center">What Are We Playing Today?</v-flex>
@@ -30,7 +30,7 @@
         </v-container>
       </v-content>
 
-      <v-content v-if="selectedGame && !checkLoadingStates()">
+      <v-content v-if="selectedGame && !checkLoadingStates()" class="fade-in">
         <sign-in
           v-if="(!playerOneRFID || !playerTwoRFID) && !needsRegister"
           :player="playerOneRFID ? 'two' : 'one'"
@@ -38,16 +38,35 @@
         ></sign-in>
       </v-content>
 
-      <v-content v-if="needsRegister && !checkLoadingStates()">
+      <v-content v-if="needsRegister && !checkLoadingStates()" class="fade-in">
         <register-user @register="register"></register-user>
       </v-content>
 
-      <v-content v-if="playerOne && playerTwo && !inProgressMatch && !checkLoadingStates()">
-        <h1>{{ playerOne.name }} VS {{ playerTwo.name }}</h1>
-        <v-btn @click="startMatch()">Start Match</v-btn>
+      <v-content v-if="this.loadingStates.welcomeMessage" class="fade-in-out">
+        <v-layout row wrap align-content-center>
+          <v-flex xs12 class="display-3 text-xs-center pt-5">Welcome {{ welcomeName }}</v-flex>
+        </v-layout>
       </v-content>
 
-      <v-content v-if="inProgressMatch && !matchSummary && !checkLoadingStates()">
+      <v-content
+        v-if="playerOne && playerTwo && !inProgressMatch && !checkLoadingStates()"
+        class="fade-in"
+      >
+        <v-layout row wrap align-content-center>
+          <v-flex xs12 class="display-3 text-xs-center">{{ playerOne.name }} VS {{ playerTwo.name }}</v-flex>
+          <v-flex xs12 class="pt-5">
+            <v-btn
+              @click="startMatch()"
+              block
+              large
+              class="pb-5 pt-3 display-1 font-weight-black"
+              color="orange darken-4"
+            >Start Match</v-btn>
+          </v-flex>
+        </v-layout>
+      </v-content>
+
+      <v-content v-if="inProgressMatch && !matchSummary && !checkLoadingStates()" class="fade-in">
         <match-in-progress
           :playerOne="playerOne"
           :playerTwo="playerTwo"
@@ -55,20 +74,26 @@
         ></match-in-progress>
       </v-content>
 
-      <v-content v-if="matchSummary && !checkLoadingStates()">
+      <v-content v-if="matchSummary && !checkLoadingStates()" class="fade-in">
         <match-summary
           :matchSummary="matchSummary"
           :playerOne="playerOne"
           :playerTwo="playerTwo"
+          :gameType="selectedGame"
           @newGame="newGame"
         ></match-summary>
       </v-content>
 
-      <v-content v-if="checkLoadingStates()">
-        <h2 v-if="loadingStates.creatingMatch">Creating Match...</h2>
-        <h2 v-if="loadingStates.readingSignIn">Signing In...</h2>
-        <h2 v-if="loadingStates.registeringUser">Registering...</h2>
-        <v-progress-linear :indeterminate="true"></v-progress-linear>
+      <v-content v-if="checkLoadingStates() && !loadingStates.welcomeMessage" class="display-2">
+        <v-layout row wrap align-content-center>
+          <v-flex xs12 class="text-xs-center">
+            <span v-if="loadingStates.creatingMatch">Creating Match...</span>
+            <span v-if="loadingStates.readingSignIn">Signing In...</span>
+            <span v-if="loadingStates.registeringUser">Registering...</span>
+          </v-flex>
+          <v-flex xs1 class="pt-5"></v-flex>
+        </v-layout>
+        <v-progress-linear :indeterminate="true" color="orange darken-4"></v-progress-linear>
       </v-content>
     </div>
   </div>
@@ -95,6 +120,7 @@ export default {
       playerTwoRFID: null,
       playerOne: null,
       playerTwo: null,
+      welcomeName: null,
       playerOneElo: null,
       playerTwoElo: null,
       needsRegister: false,
@@ -104,7 +130,8 @@ export default {
         creatingMatch: false,
         readingSignIn: false,
         registeringUser: false,
-        completingMatch: false
+        completingMatch: false,
+        welcomeMessage: false
       },
       hasLoggedIn: false,
       credentials: {
@@ -130,7 +157,7 @@ export default {
     },
 
     authLogin() {
-      const asdf = Object.keys(this.credentials)
+      const encodedCredentials = Object.keys(this.credentials)
         .map(
           key =>
             encodeURIComponent(key) +
@@ -140,7 +167,9 @@ export default {
         .join("&");
 
       http
-        .post("login", asdf, { headers: { Accept: "application/json" } })
+        .post("login", encodedCredentials, {
+          headers: { Accept: "application/json" }
+        })
         .then(response => {
           console.log(response);
           this.hasLoggedIn = true;
@@ -207,6 +236,12 @@ export default {
               this.playerTwo = response.data;
             }
             this.loadingStates.readingSignIn = false;
+            this.welcomeName = `Back ${response.data.name}`;
+            this.loadingStates.welcomeMessage = true;
+            setTimeout(() => {
+              this.loadingStates.welcomeMessage = false;
+              this.welcomeName = null;
+            }, 4000);
           })
           .catch(err => {
             console.log(err);
@@ -233,6 +268,12 @@ export default {
             this.playerTwo = response.data;
           }
           this.loadingStates.registeringUser = false;
+          this.welcomeName = ` To RĀNCŌR ${response.data.name}`;
+          this.loadingStates.welcomeMessage = true;
+          setTimeout(() => {
+            this.loadingStates.welcomeMessage = false;
+            this.welcomeName = null;
+          }, 4000);
         })
         .catch(err => {
           console.log(err);
@@ -345,3 +386,37 @@ export default {
   }
 };
 </script>
+<style>
+.fade-in {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-name: fadeIn;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-in-out {
+  animation-duration: 4s;
+  animation-fill-mode: both;
+  animation-name: fadeInOut;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+</style>

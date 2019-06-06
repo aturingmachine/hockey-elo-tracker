@@ -1,17 +1,20 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain } from "electron";
 
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
-if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+if (process.env.NODE_ENV !== "development") {
+  global.__static = require("path")
+    .join(__dirname, "/static")
+    .replace(/\\/g, "\\\\");
 }
 
-let mainWindow
-const winURL = process.env.NODE_ENV === 'development'
-  ? `http://localhost:9080`
-  : `file://${__dirname}/index.html`
+let mainWindow;
+const winURL =
+  process.env.NODE_ENV === "development"
+    ? `http://localhost:9080`
+    : `file://${__dirname}/index.html`;
 
 function createWindow() {
   /**
@@ -21,40 +24,40 @@ function createWindow() {
     height: 480,
     useContentSize: true,
     width: 800
-  })
+  });
 
-  mainWindow.loadURL(winURL)
+  mainWindow.loadURL(winURL);
 
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
+  mainWindow.on("closed", () => {
+    mainWindow = null;
+  });
 }
 
-app.on('ready', createWindow)
+app.on("ready", createWindow);
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
   }
-})
+});
 
-app.on('activate', () => {
+app.on("activate", () => {
   if (mainWindow === null) {
-    createWindow()
+    createWindow();
   }
-})
+});
 
-ipcMain.on('read-sign-in', (event, arg) => {
-  console.log('attempting to read sign in');
+ipcMain.on("read-sign-in", (event, arg) => {
+  console.log("attempting to read sign in");
   setTimeout(() => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('detected dev process')
+    if (process.env.NODE_ENV === "development") {
+      console.log("detected dev process");
       const fakeDevAuth = {
         payload: {
-          cardCode: Math.floor(Math.random() * (500 - 0))
+          cardCode: Math.floor(Math.random() * 10)
         }
-      }
-      event.sender.send('sign-in-read', JSON.stringify(fakeDevAuth));
+      };
+      event.sender.send("sign-in-read", JSON.stringify(fakeDevAuth));
     }
   }, 1000);
 });
