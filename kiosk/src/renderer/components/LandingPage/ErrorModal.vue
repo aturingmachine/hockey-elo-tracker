@@ -2,7 +2,13 @@
   <v-card>
     <v-card-title class="orange darken-4 display-1">Woah there, something went wrong...</v-card-title>
 
-    <v-card-text class="headline">{{ errorMessage }}</v-card-text>
+    <v-card-text class="title text-xs-center">
+      {{ errorMessage }} The following QR code will take you to the issue tracker.
+      <br>
+      <br>
+      <img src="@/assets/RANCORIssueTracker.png">
+      <!-- /home/turing/Dev/hockey-elo-tracker/kiosk/src/renderer/assets/RANCORIssueTracker.png -->
+    </v-card-text>
 
     <v-card-actions>
       <v-btn @click="close()">Close</v-btn>

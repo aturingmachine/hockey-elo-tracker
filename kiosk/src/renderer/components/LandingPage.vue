@@ -275,7 +275,7 @@ export default {
     register(registeringName) {
       this.loadingStates.registeringUser = true;
       http
-        .post("/api/v1/userss", {
+        .post("/api/v1/users", {
           name: registeringName,
           rfid: this.needsRegister
         })
