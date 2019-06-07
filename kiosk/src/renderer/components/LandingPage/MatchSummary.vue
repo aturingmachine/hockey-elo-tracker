@@ -120,6 +120,7 @@ export default {
 
   mounted() {
     setInterval(() => {
+      // console.log(this.count);
       this.count++;
     }, 1000);
   }
