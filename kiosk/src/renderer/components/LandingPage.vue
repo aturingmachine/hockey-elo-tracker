@@ -1,6 +1,6 @@
 <template>
   <div class>
-    <v-content v-if="!hasLoggedIn">
+    <v-content v-if="!hasLoggedIn && !checkLoadingStates()">
       <v-container fluid>
         <v-layout row wrap align-content-center>
           <v-flex xs4></v-flex>
@@ -84,7 +84,10 @@
         ></match-summary>
       </v-content>
 
-      <v-content v-if="checkLoadingStates() && !loadingStates.welcomeMessage" class="display-2">
+      <v-content
+        v-if="checkLoadingStates() && !loadingStates.welcomeMessage && !showError"
+        class="display-2"
+      >
         <v-layout row wrap align-content-center>
           <v-flex xs12 class="text-xs-center">
             <span v-if="loadingStates.creatingMatch">Creating Match...</span>
@@ -95,6 +98,14 @@
         </v-layout>
         <v-progress-linear :indeterminate="true" color="orange darken-4"></v-progress-linear>
       </v-content>
+
+      <v-dialog v-model="showError">
+        <error-modal
+          v-if="showError"
+          :errorMessage="errorMessage"
+          @closeErrorModal="closeErrorModal"
+        ></error-modal>
+      </v-dialog>
     </div>
   </div>
 </template>
@@ -107,6 +118,7 @@ import SignIn from "./LandingPage/SignIn.vue";
 import MatchSummary from "./LandingPage/MatchSummary.vue";
 import MatchInProgress from "./LandingPage/MatchInProgress.vue";
 import RegisterUser from "./LandingPage/RegisterUser.vue";
+import ErrorModal from "./LandingPage/ErrorModal.vue";
 
 const SerialPort = require("serialport");
 const Readline = require("@serialport/parser-readline");
@@ -137,7 +149,9 @@ export default {
       credentials: {
         username: "",
         password: ""
-      }
+      },
+      showError: false,
+      errorMessage: ""
     };
   },
 
@@ -148,7 +162,8 @@ export default {
     signIn: SignIn,
     matchSummary: MatchSummary,
     matchInProgress: MatchInProgress,
-    registerUser: RegisterUser
+    registerUser: RegisterUser,
+    errorModal: ErrorModal
   },
 
   methods: {
@@ -175,14 +190,19 @@ export default {
           this.hasLoggedIn = true;
         })
         .catch(err => {
-          console.log(err);
+          console.log("Auth Error", err);
+          this.errorMessage =
+            "Auth Login Failed. Check your credentials and try again or contact the Dev Team.";
+          this.showError = true;
         });
     },
 
     checkLoadingStates() {
-      return Object.keys(this.loadingStates).some(key => {
-        return this.loadingStates[key];
-      });
+      return (
+        Object.keys(this.loadingStates).some(key => {
+          return this.loadingStates[key];
+        }) || this.showError
+      );
     },
 
     startGame(gameType) {
@@ -247,6 +267,7 @@ export default {
             console.log(err);
             this.needsRegister = cardCode;
             this.loadingStates.readingSignIn = false;
+            // We cannot intelligently handle errors here since the login endpoint 500's on a missing id, and server errors
           });
       }
     },
@@ -254,7 +275,7 @@ export default {
     register(registeringName) {
       this.loadingStates.registeringUser = true;
       http
-        .post("/api/v1/users", {
+        .post("/api/v1/userss", {
           name: registeringName,
           rfid: this.needsRegister
         })
@@ -278,6 +299,9 @@ export default {
         .catch(err => {
           console.log(err);
           this.loadingStates.registeringUser = false;
+          this.handleError(
+            "Unable to Register User. Please Try Again or Contact the Dev Team."
+          );
         });
     },
 
@@ -307,6 +331,9 @@ export default {
         .catch(err => {
           console.log(err);
           this.loadingStates.creatingMatch = false;
+          this.handleError(
+            "Unable to Start Game. Please Try Again or Contact the Dev Team"
+          );
         });
     },
 
@@ -333,12 +360,27 @@ export default {
             .catch(err => {
               console.log(err);
               this.loadingStates.completingMatch = false;
+              this.handleError(
+                "Unable to Complete Match. Please Try Again or Contact the Dev Team."
+              );
             });
         })
         .catch(err => {
           console.log(err);
           this.loadingStates.completingMatch = false;
+          this.handleError(
+            "Unable to Update Match Score. Please Try Again or Contact the Dev Team."
+          );
         });
+    },
+
+    handleError(errorMessage) {
+      this.errorMessage = errorMessage;
+      this.showError = true;
+    },
+
+    closeErrorModal() {
+      (this.errorMessage = ""), (this.showError = false);
     },
 
     newGame() {
