@@ -54,7 +54,7 @@ ipcMain.on("read-sign-in", (event, arg) => {
       console.log("detected dev process");
       const fakeDevAuth = {
         payload: {
-          cardCode: Math.floor(Math.random() * 10)
+          cardCode: Math.floor(Math.random() * 10) + 1
         }
       };
       event.sender.send("sign-in-read", JSON.stringify(fakeDevAuth));

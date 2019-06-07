@@ -53,6 +53,10 @@
         class="fade-in"
       >
         <v-layout row wrap align-content-center>
+          <v-flex
+            xs12
+            class="display-3 text-xs-center"
+          >{{ selectedGame.split('_').map(i => i.slice(0,1).toUpperCase() + i.toLowerCase().slice(1, i.length)).join(' ') }}</v-flex>
           <v-flex xs12 class="display-3 text-xs-center">{{ playerOne.name }} VS {{ playerTwo.name }}</v-flex>
           <v-flex xs12 class="pt-5">
             <v-btn
@@ -133,8 +137,6 @@ export default {
       playerOne: null,
       playerTwo: null,
       welcomeName: null,
-      playerOneElo: null,
-      playerTwoElo: null,
       needsRegister: false,
       inProgressMatch: null,
       matchSummary: null,
@@ -180,6 +182,11 @@ export default {
             encodeURIComponent(this.credentials[key])
         )
         .join("&");
+
+      this.credentials = {
+        username: "",
+        password: ""
+      };
 
       http
         .post("login", encodedCredentials, {
@@ -243,33 +250,31 @@ export default {
       console.log(auth);
       const card = JSON.parse(auth);
       console.log(card);
-      if (card.payload.cardCode) {
-        const cardCode = card.payload.cardCode;
+      const cardCode = card.payload.cardCode;
 
-        http
-          .get(`/api/v1/users/login/${cardCode}`)
-          .then(response => {
-            console.log(response);
-            if (!this.playerOne) {
-              this.playerOne = response.data;
-            } else {
-              this.playerTwo = response.data;
-            }
-            this.loadingStates.readingSignIn = false;
-            this.welcomeName = `Back ${response.data.name}`;
-            this.loadingStates.welcomeMessage = true;
-            setTimeout(() => {
-              this.loadingStates.welcomeMessage = false;
-              this.welcomeName = null;
-            }, 4000);
-          })
-          .catch(err => {
-            console.log(err);
-            this.needsRegister = cardCode;
-            this.loadingStates.readingSignIn = false;
-            // We cannot intelligently handle errors here since the login endpoint 500's on a missing id, and server errors
-          });
-      }
+      http
+        .get(`/api/v1/users/login/${cardCode}`)
+        .then(response => {
+          console.log(response);
+          if (!this.playerOne) {
+            this.playerOne = response.data;
+          } else {
+            this.playerTwo = response.data;
+          }
+          this.loadingStates.readingSignIn = false;
+          this.welcomeName = `Back ${response.data.name}`;
+          this.loadingStates.welcomeMessage = true;
+          setTimeout(() => {
+            this.loadingStates.welcomeMessage = false;
+            this.welcomeName = null;
+          }, 4000);
+        })
+        .catch(err => {
+          console.log(err);
+          this.needsRegister = cardCode;
+          this.loadingStates.readingSignIn = false;
+          // We cannot intelligently handle errors here since the login endpoint 500's on a missing id, and server errors
+        });
     },
 
     register(registeringName) {
@@ -389,8 +394,6 @@ export default {
         (this.playerTwoRFID = null),
         (this.playerOne = null),
         (this.playerTwo = null),
-        (this.playerOneElo = null),
-        (this.playerTwoElo = null),
         (this.needsRegister = false),
         (this.registeringName = null),
         (this.inProgressMatch = null),

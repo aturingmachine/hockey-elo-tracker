@@ -65,13 +65,12 @@
             color="orange darken-4"
             block
             large
-            :disabled="count < 5"
-            :loading="count < 5"
+            :loading="count < 11"
             @click="newGame()"
           >
             New Game
             <template v-slot:loader>
-              <v-progress-circular :value="count * 20"></v-progress-circular>
+              <v-progress-circular :value="count * 10"></v-progress-circular>
             </template>
           </v-btn>
         </div>
@@ -81,11 +80,12 @@
 </template>
 
 <script>
-import { setInterval } from "timers";
+import { setInterval, clearInterval } from "timers";
 export default {
   data: () => {
     return {
-      count: 0
+      count: 0,
+      intervalId: null
     };
   },
 
@@ -119,10 +119,14 @@ export default {
   },
 
   mounted() {
-    setInterval(() => {
-      // console.log(this.count);
+    this.intervalId = setInterval(() => {
+      console.log(this.count);
       this.count++;
-    }, 1000);
+    }, 500);
+  },
+
+  beforeDestroy() {
+    clearInterval(this.intervalId);
   }
 };
 </script>
