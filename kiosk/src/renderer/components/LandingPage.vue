@@ -102,15 +102,15 @@
         </v-layout>
         <v-progress-linear :indeterminate="true" color="orange darken-4"></v-progress-linear>
       </v-content>
-
-      <v-dialog v-model="showError">
-        <error-modal
-          v-if="showError"
-          :errorMessage="errorMessage"
-          @closeErrorModal="closeErrorModal"
-        ></error-modal>
-      </v-dialog>
     </div>
+    <v-dialog v-model="showError">
+      <error-modal
+        v-if="showError"
+        :errorMessage="errorMessage"
+        :isFatalError="isFatalError"
+        @closeErrorModal="closeErrorModal"
+      ></error-modal>
+    </v-dialog>
   </div>
 </template>
 
@@ -123,9 +123,6 @@ import MatchSummary from "./LandingPage/MatchSummary.vue";
 import MatchInProgress from "./LandingPage/MatchInProgress.vue";
 import RegisterUser from "./LandingPage/RegisterUser.vue";
 import ErrorModal from "./LandingPage/ErrorModal.vue";
-
-const SerialPort = require("serialport");
-const Readline = require("@serialport/parser-readline");
 
 export default {
   data: () => {
@@ -153,7 +150,8 @@ export default {
         password: ""
       },
       showError: false,
-      errorMessage: ""
+      errorMessage: "",
+      isFatalError: false
     };
   },
 
@@ -215,28 +213,6 @@ export default {
     startGame(gameType) {
       this.selectedGame = gameType;
       console.log(gameType);
-
-      SerialPort.list((err, ports) => {
-        if (err) {
-          console.log(err);
-        }
-        const scannerPort = ports.find(port => {
-          return port.serialNumber === "A906XU0J";
-        });
-
-        if (!!scannerPort) {
-          var port = new SerialPort(scannerPort.comName);
-          const parser = port.pipe(
-            new Readline({
-              delimiter: "\r\n"
-            })
-          );
-
-          port.on("open", () => {
-            parser.on("data", this.signIn);
-          });
-        }
-      });
     },
 
     readId() {
@@ -379,9 +355,11 @@ export default {
         });
     },
 
-    handleError(errorMessage) {
+    handleError(errorMessage, isFatal = false) {
+      console.log("Handling Error");
       this.errorMessage = errorMessage;
       this.showError = true;
+      this.isFatalError = isFatal;
     },
 
     closeErrorModal() {
@@ -404,16 +382,43 @@ export default {
           registeringUser: false,
           completingMatch: false
         });
+      ipcRenderer.send("new-game");
+    },
+
+    healthCheck() {
+      console.log("Render Process Sending Health Check");
+      ipcRenderer.send("health-check-send");
     }
   },
 
   mounted() {
+    //check that the kiosk has a session cookie
     const sessionId = document.cookie.match(
       "(^|[^;]+)\\s*JSESSIONID\\s*=\\s*([^;]+)"
     );
     if (sessionId) {
       this.hasLoggedIn = true;
     }
+
+    //check that the main process has a connection to the card reader
+    this.healthCheck();
+
+    //here we are going to start a timer to do regular health checks on the process
+    setInterval(() => {
+      this.healthCheck();
+    }, 60000);
+
+    //check the mains response, if false we need to fail the application.
+    ipcRenderer.on("health-check-response", (event, arg) => {
+      console.log("Render Recieved Health Check", arg);
+      if (!arg) {
+        this.handleError(
+          "Unable to Connect to Card Reader. Please Contact the Dev Team or check cable connections.",
+          true
+        );
+      }
+    });
+
     //catch the sign in event and set the player ids to the response
     ipcRenderer.on("sign-in-read", (event, arg) => {
       console.log("hit renderer");

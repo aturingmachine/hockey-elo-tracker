@@ -11,7 +11,7 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn @click="close()">Close</v-btn>
+      <v-btn v-if="!isFatalError" @click="close()">Close</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -31,6 +31,9 @@ export default {
   props: {
     errorMessage: {
       type: String
+    },
+    isFatalError: {
+      type: Boolean
     }
   }
 };
