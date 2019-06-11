@@ -3,7 +3,6 @@ package com.hockey.elo.elotracker.elohistory.service
 import com.hockey.elo.elotracker.elohistory.repository.EloHistoryRepository
 import com.hockey.elo.elotracker.elohistory.repository.models.EloHistoryRecord
 import com.hockey.elo.elotracker.shared.models.GameType
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test

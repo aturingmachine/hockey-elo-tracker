@@ -29,4 +29,5 @@ class SessionFilter : GenericFilterBean() {
             res.setHeader(setCookieHeaderName, setCookieHeader)
         }
     }
+
 }

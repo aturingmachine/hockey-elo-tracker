@@ -61,16 +61,15 @@ class SecurityConfigurations(
 
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
-        var configuration = CorsConfiguration();
-        configuration.setAllowedOrigins(mutableListOf("http://localhost:9080"));
-        configuration.setAllowedMethods(mutableListOf("*"));
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(
-            mutableListOf("Authorization", "Cache-Control", "Content-Type")
-        );
-        var source = UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+        val configuration = CorsConfiguration()
+        configuration.allowedOrigins = mutableListOf("http://localhost:9080")
+        configuration.allowedMethods = mutableListOf("*")
+        configuration.allowCredentials = true
+        configuration.allowedHeaders = mutableListOf("Authorization", "Cache-Control", "Content-Type")
+
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
     }
 
 }
