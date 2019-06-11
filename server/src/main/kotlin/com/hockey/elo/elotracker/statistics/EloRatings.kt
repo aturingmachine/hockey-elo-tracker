@@ -5,7 +5,7 @@ import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
 class EloRatings(
-        private val player1Elo: Int
+    private val player1Elo: Int
 ) {
 
     private val kFactor = 32.0

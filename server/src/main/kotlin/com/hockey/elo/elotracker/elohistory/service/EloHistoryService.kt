@@ -40,4 +40,5 @@ class EloHistoryService(private val eloHistoryRepository: EloHistoryRepository) 
       record.date.after(
               Date.from(ZonedDateTime.now().minusMonths(months).toInstant())
       )}
+
 }

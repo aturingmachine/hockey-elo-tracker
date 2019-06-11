@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class RequestAwareAuthenticationSuccessHandler: SimpleUrlAuthenticationSuccessHandler() {
 
-    private var requestCache: RequestCache = HttpSessionRequestCache()
+    private val requestCache: RequestCache = HttpSessionRequestCache()
 
     override fun onAuthenticationSuccess(
             request: HttpServletRequest?,
@@ -26,9 +26,8 @@ class RequestAwareAuthenticationSuccessHandler: SimpleUrlAuthenticationSuccessHa
             return
         }
 
-        val targetUrlParam = getTargetUrlParameter()
-        if (isAlwaysUseDefaultTargetUrl() ||
-                (targetUrlParam != null) &&
+        if (super.isAlwaysUseDefaultTargetUrl() ||
+                (targetUrlParameter != null) &&
                 StringUtils.hasText(request?.getParameter(targetUrlParameter))) {
             requestCache.removeRequest(request, response)
             clearAuthenticationAttributes(request)
@@ -36,10 +35,6 @@ class RequestAwareAuthenticationSuccessHandler: SimpleUrlAuthenticationSuccessHa
         }
 
         clearAuthenticationAttributes(request)
-    }
-
-    fun setRequestCache(requestCache: RequestCache) {
-        this.requestCache = requestCache
     }
 
 }

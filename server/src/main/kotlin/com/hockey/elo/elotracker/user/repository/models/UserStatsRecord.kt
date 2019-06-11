@@ -9,7 +9,7 @@ import javax.persistence.Id
 @Entity
 data class UserStatsRecord(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long = 0L,
+    var id: Long = 0L,
         var userId: Long = 0L,
         var gameType: GameType = GameType.BUBBLE_HOCKEY,
         var elo: Int = 1200,
