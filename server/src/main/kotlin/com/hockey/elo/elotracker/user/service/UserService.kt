@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(private val userRepository: UserRepository,
                   private val userStatsRepository: UserStatsRepository) {
-
+  
   fun createUser(userLoginRequest: UserLoginRequest): User {
     userRepository.findByRfid(userLoginRequest.rfid) ?: run {
       val userRecord = UserRecord(

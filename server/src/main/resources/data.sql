@@ -1,3 +1,12 @@
+#Users and Authorities
+INSERT INTO users(username, password, enabled) VALUES ('pi','$2a$10$0Sv774g9QW7AsgVvwdJP8OodPmdML6xG1SU369zUEp1ka41c6uSiu', true);
+INSERT INTO authorities (username, authority) VALUES ('pi', 'USER');
+
+INSERT INTO users(username, password, enabled) VALUES ('piAdmin','$2a$10$l5dOQ6xrbt4KlnIP8wZY4.a4OCu0zgVjnRSoFDHeYMLI85vVA.wam', true);
+INSERT INTO authorities (username, authority) VALUES ('piAdmin', 'USER');
+INSERT INTO authorities (username, authority) VALUES ('piAdmin', 'ADMIN');
+
+# Players
 INSERT INTO user_record (name, rfid, email) VALUES ('Test User 1', 'testrfid1', 'testUser1@gmail.com');
 INSERT INTO user_stats_record (user_id, game_type, elo, losses, wins) VALUES (1, 0, 1200, 0, 0);
 
@@ -8,7 +17,7 @@ INSERT INTO user_stats_record (user_id, game_type, elo, losses, wins) VALUES (2,
 INSERT INTO user_record (name, rfid, email) VALUES ('Test User 3', 'testrfid3', 'testUser3@gmail.com');
 INSERT INTO user_stats_record (user_id, game_type, elo, losses, wins) VALUES (3, 0, 1387, 4, 6);
 
-
+#Matches
 INSERT INTO match_record (game_type, player_one_id, player_one_score, player_two_id, player_two_score, winner_id)
 VALUES (0, 2, 0, 3, 1, 3);
 
@@ -37,6 +46,7 @@ VALUES (0, 2, 4, 3, 1, 2);
 INSERT INTO match_record (game_type, player_one_id, player_one_score, player_two_id, player_two_score, winner_id)
 VALUES (0, 2, 6, 3, 1, 2);
 
+#Elo History
 INSERT INTO elo_history_record (date, elo, user_id, game_type) VALUES ('2019-01-01 12:00:00', 1200, 1, 0);
 
 INSERT INTO elo_history_record (date, elo, user_id, game_type) VALUES ('2019-01-01 12:00:00', 1200, 2, 0);
