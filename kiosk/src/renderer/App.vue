@@ -33,6 +33,7 @@ export default {
   methods: {
     //this is mostly here for devs
     reset() {
+      ipcRenderer.send("new-game");
       location.reload();
     }
   }

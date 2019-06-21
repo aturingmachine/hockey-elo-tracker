@@ -1,7 +1,10 @@
 <template>
   <v-container class="pt-0" fluid>
     <v-layout row wrap align-content-center>
-      <v-flex xs12 class="display-3 pb-2">{{ `Congratulations ${matchSummary.winnerName}!` }}</v-flex>
+      <v-flex
+        xs12
+        class="display-2 pb-2 text-xs-center"
+      >{{ `${matchSummary.winnerName} Won at ${gameType.split('_').map(i => i.slice(0,1).toUpperCase() + i.toLowerCase().slice(1, i.length)).join(' ') }!` }}</v-flex>
       <v-flex xs4>
         <v-card class="headline">
           <v-card-title class="display-1 orange darken-4">{{ playerOne.name }}</v-card-title>
@@ -28,11 +31,7 @@
           </v-card-text>
         </v-card>
       </v-flex>
-      <v-flex xs4>
-        <div class="text-xs-center">
-          <v-btn @click="newGame()">New Game</v-btn>
-        </div>
-      </v-flex>
+      <v-flex xs4></v-flex>
       <v-flex xs4>
         <v-card class="headline">
           <v-card-title class="display-1 orange darken-4">{{ playerTwo.name }}</v-card-title>
@@ -59,14 +58,35 @@
           </v-card-text>
         </v-card>
       </v-flex>
+      <v-flex xs12>
+        <div class="text-xs-center mt-4">
+          <v-btn
+            class="pt-3 pb-4"
+            color="orange darken-4"
+            block
+            large
+            :loading="count < 11"
+            @click="newGame()"
+          >
+            New Game
+            <template v-slot:loader>
+              <v-progress-circular :value="count * 10"></v-progress-circular>
+            </template>
+          </v-btn>
+        </div>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import { setInterval, clearInterval } from "timers";
 export default {
   data: () => {
-    return {};
+    return {
+      count: 0,
+      intervalId: null
+    };
   },
 
   props: {
@@ -78,6 +98,17 @@ export default {
     },
     playerTwo: {
       type: Object
+    },
+    gameType: {
+      type: String
+    }
+  },
+
+  watch: {
+    count() {
+      if (this.count > 120) {
+        this.newGame();
+      }
     }
   },
 
@@ -85,6 +116,17 @@ export default {
     newGame() {
       this.$emit("newGame");
     }
+  },
+
+  mounted() {
+    this.intervalId = setInterval(() => {
+      console.log(this.count);
+      this.count++;
+    }, 500);
+  },
+
+  beforeDestroy() {
+    clearInterval(this.intervalId);
   }
 };
 </script>
