@@ -1,6 +1,6 @@
 <template>
   <div class>
-    <v-content v-if="!hasLoggedIn">
+    <v-content v-if="!hasLoggedIn && !checkLoadingStates()">
       <v-container fluid>
         <v-layout row wrap align-content-center>
           <v-flex xs4></v-flex>
@@ -16,7 +16,7 @@
     </v-content>
 
     <div v-if="hasLoggedIn">
-      <v-content v-if="!selectedGame && !checkLoadingStates()">
+      <v-content v-if="!selectedGame && !checkLoadingStates()" class="fade-in">
         <v-container fluid>
           <v-layout row wrap align-content-center>
             <v-flex xs12 class="display-2 pb-5 text-xs-center">What Are We Playing Today?</v-flex>
@@ -30,7 +30,7 @@
         </v-container>
       </v-content>
 
-      <v-content v-if="selectedGame && !checkLoadingStates()">
+      <v-content v-if="selectedGame && !checkLoadingStates()" class="fade-in">
         <sign-in
           v-if="(!playerOneRFID || !playerTwoRFID) && !needsRegister"
           :player="playerOneRFID ? 'two' : 'one'"
@@ -38,16 +38,39 @@
         ></sign-in>
       </v-content>
 
-      <v-content v-if="needsRegister && !checkLoadingStates()">
+      <v-content v-if="needsRegister && !checkLoadingStates()" class="fade-in">
         <register-user @register="register"></register-user>
       </v-content>
 
-      <v-content v-if="playerOne && playerTwo && !inProgressMatch && !checkLoadingStates()">
-        <h1>{{ playerOne.name }} VS {{ playerTwo.name }}</h1>
-        <v-btn @click="startMatch()">Start Match</v-btn>
+      <v-content v-if="this.loadingStates.welcomeMessage" class="fade-in-out">
+        <v-layout row wrap align-content-center>
+          <v-flex xs12 class="display-3 text-xs-center pt-5">Welcome {{ welcomeName }}</v-flex>
+        </v-layout>
       </v-content>
 
-      <v-content v-if="inProgressMatch && !matchSummary && !checkLoadingStates()">
+      <v-content
+        v-if="playerOne && playerTwo && !inProgressMatch && !checkLoadingStates()"
+        class="fade-in"
+      >
+        <v-layout row wrap align-content-center>
+          <v-flex
+            xs12
+            class="display-3 text-xs-center"
+          >{{ selectedGame.split('_').map(i => i.slice(0,1).toUpperCase() + i.toLowerCase().slice(1, i.length)).join(' ') }}</v-flex>
+          <v-flex xs12 class="display-3 text-xs-center">{{ playerOne.name }} VS {{ playerTwo.name }}</v-flex>
+          <v-flex xs12 class="pt-5">
+            <v-btn
+              @click="startMatch()"
+              block
+              large
+              class="pb-5 pt-3 display-1 font-weight-black"
+              color="orange darken-4"
+            >Start Match</v-btn>
+          </v-flex>
+        </v-layout>
+      </v-content>
+
+      <v-content v-if="inProgressMatch && !matchSummary && !checkLoadingStates()" class="fade-in">
         <match-in-progress
           :playerOne="playerOne"
           :playerTwo="playerTwo"
@@ -55,22 +78,39 @@
         ></match-in-progress>
       </v-content>
 
-      <v-content v-if="matchSummary && !checkLoadingStates()">
+      <v-content v-if="matchSummary && !checkLoadingStates()" class="fade-in">
         <match-summary
           :matchSummary="matchSummary"
           :playerOne="playerOne"
           :playerTwo="playerTwo"
+          :gameType="selectedGame"
           @newGame="newGame"
         ></match-summary>
       </v-content>
 
-      <v-content v-if="checkLoadingStates()">
-        <h2 v-if="loadingStates.creatingMatch">Creating Match...</h2>
-        <h2 v-if="loadingStates.readingSignIn">Signing In...</h2>
-        <h2 v-if="loadingStates.registeringUser">Registering...</h2>
-        <v-progress-linear :indeterminate="true"></v-progress-linear>
+      <v-content
+        v-if="checkLoadingStates() && !loadingStates.welcomeMessage && !showError"
+        class="display-2"
+      >
+        <v-layout row wrap align-content-center>
+          <v-flex xs12 class="text-xs-center">
+            <span v-if="loadingStates.creatingMatch">Creating Match...</span>
+            <span v-if="loadingStates.readingSignIn">Signing In...</span>
+            <span v-if="loadingStates.registeringUser">Registering...</span>
+          </v-flex>
+          <v-flex xs1 class="pt-5"></v-flex>
+        </v-layout>
+        <v-progress-linear :indeterminate="true" color="orange darken-4"></v-progress-linear>
       </v-content>
     </div>
+    <v-dialog v-model="showError">
+      <error-modal
+        v-if="showError"
+        :errorMessage="errorMessage"
+        :isFatalError="isFatalError"
+        @closeErrorModal="closeErrorModal"
+      ></error-modal>
+    </v-dialog>
   </div>
 </template>
 
@@ -82,9 +122,7 @@ import SignIn from "./LandingPage/SignIn.vue";
 import MatchSummary from "./LandingPage/MatchSummary.vue";
 import MatchInProgress from "./LandingPage/MatchInProgress.vue";
 import RegisterUser from "./LandingPage/RegisterUser.vue";
-
-const SerialPort = require("serialport");
-const Readline = require("@serialport/parser-readline");
+import ErrorModal from "./LandingPage/ErrorModal.vue";
 
 export default {
   data: () => {
@@ -95,8 +133,7 @@ export default {
       playerTwoRFID: null,
       playerOne: null,
       playerTwo: null,
-      playerOneElo: null,
-      playerTwoElo: null,
+      welcomeName: null,
       needsRegister: false,
       inProgressMatch: null,
       matchSummary: null,
@@ -104,13 +141,17 @@ export default {
         creatingMatch: false,
         readingSignIn: false,
         registeringUser: false,
-        completingMatch: false
+        completingMatch: false,
+        welcomeMessage: false
       },
       hasLoggedIn: false,
       credentials: {
         username: "",
         password: ""
-      }
+      },
+      showError: false,
+      errorMessage: "",
+      isFatalError: false
     };
   },
 
@@ -121,7 +162,8 @@ export default {
     signIn: SignIn,
     matchSummary: MatchSummary,
     matchInProgress: MatchInProgress,
-    registerUser: RegisterUser
+    registerUser: RegisterUser,
+    errorModal: ErrorModal
   },
 
   methods: {
@@ -130,7 +172,7 @@ export default {
     },
 
     authLogin() {
-      const asdf = Object.keys(this.credentials)
+      const encodedCredentials = Object.keys(this.credentials)
         .map(
           key =>
             encodeURIComponent(key) +
@@ -139,48 +181,38 @@ export default {
         )
         .join("&");
 
+      this.credentials = {
+        username: "",
+        password: ""
+      };
+
       http
-        .post("login", asdf, { headers: { Accept: "application/json" } })
+        .post("login", encodedCredentials, {
+          headers: { Accept: "application/json" }
+        })
         .then(response => {
           console.log(response);
           this.hasLoggedIn = true;
         })
         .catch(err => {
-          console.log(err);
+          console.log("Auth Error", err);
+          this.errorMessage =
+            "Auth Login Failed. Check your credentials and try again or contact the Dev Team.";
+          this.showError = true;
         });
     },
 
     checkLoadingStates() {
-      return Object.keys(this.loadingStates).some(key => {
-        return this.loadingStates[key];
-      });
+      return (
+        Object.keys(this.loadingStates).some(key => {
+          return this.loadingStates[key];
+        }) || this.showError
+      );
     },
 
     startGame(gameType) {
       this.selectedGame = gameType;
       console.log(gameType);
-
-      SerialPort.list((err, ports) => {
-        if (err) {
-          console.log(err);
-        }
-        const scannerPort = ports.find(port => {
-          return port.serialNumber === "A906XU0J";
-        });
-
-        if (!!scannerPort) {
-          var port = new SerialPort(scannerPort.comName);
-          const parser = port.pipe(
-            new Readline({
-              delimiter: "\r\n"
-            })
-          );
-
-          port.on("open", () => {
-            parser.on("data", this.signIn);
-          });
-        }
-      });
     },
 
     readId() {
@@ -194,26 +226,31 @@ export default {
       console.log(auth);
       const card = JSON.parse(auth);
       console.log(card);
-      if (card.payload.cardCode) {
-        const cardCode = card.payload.cardCode;
+      const cardCode = card.payload.cardCode;
 
-        http
-          .get(`/api/v1/users/login/${cardCode}`)
-          .then(response => {
-            console.log(response);
-            if (!this.playerOne) {
-              this.playerOne = response.data;
-            } else {
-              this.playerTwo = response.data;
-            }
-            this.loadingStates.readingSignIn = false;
-          })
-          .catch(err => {
-            console.log(err);
-            this.needsRegister = cardCode;
-            this.loadingStates.readingSignIn = false;
-          });
-      }
+      http
+        .get(`/api/v1/users/login/${cardCode}`)
+        .then(response => {
+          console.log(response);
+          if (!this.playerOne) {
+            this.playerOne = response.data;
+          } else {
+            this.playerTwo = response.data;
+          }
+          this.loadingStates.readingSignIn = false;
+          this.welcomeName = `Back ${response.data.name}`;
+          this.loadingStates.welcomeMessage = true;
+          setTimeout(() => {
+            this.loadingStates.welcomeMessage = false;
+            this.welcomeName = null;
+          }, 4000);
+        })
+        .catch(err => {
+          console.log(err);
+          this.needsRegister = cardCode;
+          this.loadingStates.readingSignIn = false;
+          // We cannot intelligently handle errors here since the login endpoint 500's on a missing id, and server errors
+        });
     },
 
     register(registeringName) {
@@ -233,10 +270,19 @@ export default {
             this.playerTwo = response.data;
           }
           this.loadingStates.registeringUser = false;
+          this.welcomeName = ` To RĀNCŌR ${response.data.name}`;
+          this.loadingStates.welcomeMessage = true;
+          setTimeout(() => {
+            this.loadingStates.welcomeMessage = false;
+            this.welcomeName = null;
+          }, 4000);
         })
         .catch(err => {
           console.log(err);
           this.loadingStates.registeringUser = false;
+          this.handleError(
+            "Unable to Register User. Please Try Again or Contact the Dev Team."
+          );
         });
     },
 
@@ -266,6 +312,9 @@ export default {
         .catch(err => {
           console.log(err);
           this.loadingStates.creatingMatch = false;
+          this.handleError(
+            "Unable to Start Game. Please Try Again or Contact the Dev Team"
+          );
         });
     },
 
@@ -292,12 +341,29 @@ export default {
             .catch(err => {
               console.log(err);
               this.loadingStates.completingMatch = false;
+              this.handleError(
+                "Unable to Complete Match. Please Try Again or Contact the Dev Team."
+              );
             });
         })
         .catch(err => {
           console.log(err);
           this.loadingStates.completingMatch = false;
+          this.handleError(
+            "Unable to Update Match Score. Please Try Again or Contact the Dev Team."
+          );
         });
+    },
+
+    handleError(errorMessage, isFatal = false) {
+      console.log("Handling Error");
+      this.errorMessage = errorMessage;
+      this.showError = true;
+      this.isFatalError = isFatal;
+    },
+
+    closeErrorModal() {
+      (this.errorMessage = ""), (this.showError = false);
     },
 
     newGame() {
@@ -306,8 +372,6 @@ export default {
         (this.playerTwoRFID = null),
         (this.playerOne = null),
         (this.playerTwo = null),
-        (this.playerOneElo = null),
-        (this.playerTwoElo = null),
         (this.needsRegister = false),
         (this.registeringName = null),
         (this.inProgressMatch = null),
@@ -318,16 +382,43 @@ export default {
           registeringUser: false,
           completingMatch: false
         });
+      ipcRenderer.send("new-game");
+    },
+
+    healthCheck() {
+      console.log("Render Process Sending Health Check");
+      ipcRenderer.send("health-check-send");
     }
   },
 
   mounted() {
+    //check that the kiosk has a session cookie
     const sessionId = document.cookie.match(
       "(^|[^;]+)\\s*JSESSIONID\\s*=\\s*([^;]+)"
     );
     if (sessionId) {
       this.hasLoggedIn = true;
     }
+
+    //check that the main process has a connection to the card reader
+    this.healthCheck();
+
+    //here we are going to start a timer to do regular health checks on the process
+    setInterval(() => {
+      this.healthCheck();
+    }, 60000);
+
+    //check the mains response, if false we need to fail the application.
+    ipcRenderer.on("health-check-response", (event, arg) => {
+      console.log("Render Recieved Health Check", arg);
+      if (!arg) {
+        this.handleError(
+          "Unable to Connect to Card Reader. Please Contact the Dev Team or check cable connections.",
+          true
+        );
+      }
+    });
+
     //catch the sign in event and set the player ids to the response
     ipcRenderer.on("sign-in-read", (event, arg) => {
       console.log("hit renderer");
@@ -345,3 +436,37 @@ export default {
   }
 };
 </script>
+<style>
+.fade-in {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-name: fadeIn;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-in-out {
+  animation-duration: 4s;
+  animation-fill-mode: both;
+  animation-name: fadeInOut;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+</style>

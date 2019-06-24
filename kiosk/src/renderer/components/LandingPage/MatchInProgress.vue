@@ -2,40 +2,45 @@
   <v-container fluid>
     <v-layout row wrap align-content-center>
       <v-flex xs4>
-        <!-- <v-text-field
-          v-model="scores.playerOne"
-          type="number"
-          min="0"
-          :label="`${playerOne.name}'s Score`"
-        ></v-text-field>-->
         <div class="display-2 text-xs-center">{{ playerOne.name }}</div>
-        <div class="orange darken-4 text-xs-center display-2" @click="increment(1)">+</div>
+        <div
+          v-ripple
+          class="orange darken-4 text-xs-center display-2 point-button"
+          @click="increment(1)"
+        >+</div>
         <div class="text-xs-center display-4">{{ scores.playerOne }}</div>
-        <div class="orange darken-4 text-xs-center display-2" @click="decrement(1)">-</div>
+        <div
+          v-ripple
+          class="orange darken-4 text-xs-center display-2 point-button"
+          @click="decrement(1)"
+        >-</div>
       </v-flex>
       <v-flex xs4>
         <div class="display-2 text-xs-center">VS</div>
-        <!-- <div></div>
-        <div>
-          <v-btn @click="completeMatch()">Finish Match</v-btn>
-        </div>
-        <div></div>-->
       </v-flex>
       <v-flex xs4>
-        <!-- <v-text-field
-          v-model="scores.playerTwo"
-          type="number"
-          min="0"
-          :label="`${playerTwo.name}'s Score`"
-        ></v-text-field>-->
         <div class="display-2 text-xs-center">{{ playerTwo.name }}</div>
-        <div class="orange darken-4 text-xs-center display-2" @click="increment(2)">+</div>
+        <div
+          v-ripple
+          class="orange darken-4 text-xs-center display-2 point-button"
+          @click="increment(2)"
+        >+</div>
         <div class="text-xs-center display-4">{{ scores.playerTwo }}</div>
-        <div class="orange darken-4 text-xs-center display-2" @click="decrement(2)">-</div>
+        <div
+          v-ripple
+          class="orange darken-4 text-xs-center display-2 point-button"
+          @click="decrement(2)"
+        >-</div>
       </v-flex>
-      <v-flex xs5></v-flex>
-      <v-flex xs4 justify-center>
-        <v-btn @click="completeMatch()">Finish Match</v-btn>
+      <!-- <v-flex xs5></v-flex> -->
+      <v-flex xs12 justify-center class="mt-4">
+        <v-btn
+          @click="completeMatch()"
+          block
+          class="mt-3 mb-0"
+          color="orange darken-4"
+          :disabled="shouldDisable()"
+        >Finish Match</v-btn>
       </v-flex>
     </v-layout>
   </v-container>
@@ -62,6 +67,13 @@ export default {
   },
 
   methods: {
+    shouldDisable() {
+      return (
+        !Object.keys(this.scores).some(i => this.scores[i] > 0) ||
+        this.scores.playerOne === this.scores.playerTwo
+      );
+    },
+
     completeMatch() {
       this.$emit("completeMatch", this.scores);
     },
@@ -90,4 +102,8 @@ export default {
 </script>
 
 <style>
+.point-button {
+  user-select: none;
+  cursor: pointer;
+}
 </style>
