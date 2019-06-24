@@ -38,7 +38,7 @@ struct UserHeader : View {
                 .bold()
             Text("\(userEmail)")
                 .font(.headline)
-        }
+        }.padding()
     }
     
 }
