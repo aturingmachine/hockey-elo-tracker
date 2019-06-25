@@ -50,7 +50,7 @@ function createWindow() {
     console.log(ports);
 
     scannerPort = ports.find(port => {
-      return port.comName === "/dev/ttyUSB0";
+      return port.serialNumber === "A906XU0J";
     });
 
     if (!!scannerPort) {
@@ -63,13 +63,6 @@ function createWindow() {
     } else {
       console.log("Unable to mount scanner.");
     }
-
-    // port.on("open", () => {
-    //   parser.on("data", x => {
-    //     console.log(x);
-    //   });
-    // });
-    // }
   });
 }
 
@@ -98,11 +91,11 @@ app.on("activate", () => {
 
 const exists = portName =>
   SerialPort.list().then(ports =>
-    ports.some(port => port.comName === portName)
+    ports.some(port => port.serialNumber === portName)
   );
 
 ipcMain.on("health-check-send", event => {
-  exists("/dev/ttyUSB0").then(res => {
+  exists("A906XU0J").then(res => {
     console.log("Health Check Initiated; Status: ", !!res ? "Healthy" : "Bad");
     event.sender.send("health-check-response", !!res);
   });
@@ -130,18 +123,6 @@ ipcMain.on("read-sign-in", (event, arg) => {
       }
     }
   });
-
-  // setTimeout(() => {
-  //   if (process.env.NODE_ENV === "development") {
-  //     console.log("detected dev process");
-  //     const fakeDevAuth = {
-  //       payload: {
-  //         cardCode: Math.floor(Math.random() * 10) + 1
-  //       }
-  //     };
-  //     event.sender.send("sign-in-read", JSON.stringify(fakeDevAuth));
-  //   }
-  // }, 1000);
 });
 
 //here we need to clear our card state on a new game

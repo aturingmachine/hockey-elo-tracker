@@ -12,21 +12,23 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import javax.sql.DataSource
 
 @EnableWebSecurity
 @Configuration
 class SecurityConfigurations(
         private val restAuthenticationEntryPoint: RestAuthenticatedEntryPoint,
         private val mySuccessHandler: RequestAwareAuthenticationSuccessHandler,
-        private val myFailureHandler: RequestAwareAuthenticationFailureHandler)
+        private val myFailureHandler: RequestAwareAuthenticationFailureHandler,
+        private val dataSource: DataSource)
     : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.inMemoryAuthentication()
-                .withUser("admin").password(encoder().encode("adminPass")).roles("ADMIN")
-                .and()
-                .withUser("user").password(encoder().encode("userPass")).roles("USER")
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery(
+                        "select username, password, enabled from users where username = ?")
+                .authoritiesByUsernameQuery("select username, authority from authorities where username=?")
     }
 
     override fun configure(http: HttpSecurity?) {
@@ -35,16 +37,16 @@ class SecurityConfigurations(
         }
 
         http
+            .authorizeRequests()
+            .antMatchers("/login").permitAll()
+            .antMatchers("/", "/api/v1/users/**").authenticated()
+            .antMatchers("/api/admin/**").hasRole("ADMIN")
+            .and()
             .cors()
             .and()
             .csrf().disable()
             .exceptionHandling()
             .authenticationEntryPoint(restAuthenticationEntryPoint)
-            .and()
-            .authorizeRequests()
-            .antMatchers("POST", "/login").permitAll()
-            .antMatchers("/", "/api/v1/users/**").authenticated()
-            .antMatchers("/api/admin/**").hasRole("ADMIN")
             .and()
             .addFilterBefore(SessionFilter(), SecurityContextPersistenceFilter::class.java)
             .formLogin()
@@ -62,7 +64,7 @@ class SecurityConfigurations(
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowedOrigins = mutableListOf("http://localhost:9080")
+        configuration.allowedOrigins = mutableListOf("http://localhost:9080", "*")
         configuration.allowedMethods = mutableListOf("*")
         configuration.allowCredentials = true
         configuration.allowedHeaders = mutableListOf("Authorization", "Cache-Control", "Content-Type")
