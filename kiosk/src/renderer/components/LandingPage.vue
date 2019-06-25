@@ -421,17 +421,19 @@ export default {
 
     //catch the sign in event and set the player ids to the response
     ipcRenderer.on("sign-in-read", (event, arg) => {
-      console.log("hit renderer");
-      if (this.playerOneRFID) {
-        console.log("setting two");
-        this.playerTwoRFID = arg;
-        this.signIn(arg);
-      } else {
-        console.log("setting one");
-        this.playerOneRFID = arg;
-        this.signIn(arg);
+      if (!!this.selectedGame) {
+        console.log("hit renderer");
+        if (!this.playerTwoRFID && !!this.playerOneRFID) {
+          console.log("setting two");
+          this.playerTwoRFID = arg;
+          this.signIn(arg);
+        } else if (!this.playerOneRFID) {
+          console.log("setting one");
+          this.playerOneRFID = arg;
+          this.signIn(arg);
+        }
+        console.log(arg);
       }
-      console.log(arg);
     });
   }
 };

@@ -35,16 +35,16 @@ class SecurityConfigurations(
         }
 
         http
+            .authorizeRequests()
+            .antMatchers("/login").permitAll()
+            .antMatchers("/", "/api/v1/users/**").authenticated()
+            .antMatchers("/api/admin/**").hasRole("ADMIN")
+            .and()
             .cors()
             .and()
             .csrf().disable()
             .exceptionHandling()
             .authenticationEntryPoint(restAuthenticationEntryPoint)
-            .and()
-            .authorizeRequests()
-            .antMatchers("POST", "/login").permitAll()
-            .antMatchers("/", "/api/v1/users/**").authenticated()
-            .antMatchers("/api/admin/**").hasRole("ADMIN")
             .and()
             .addFilterBefore(SessionFilter(), SecurityContextPersistenceFilter::class.java)
             .formLogin()
@@ -62,7 +62,7 @@ class SecurityConfigurations(
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         var configuration = CorsConfiguration();
-        configuration.setAllowedOrigins(mutableListOf("http://localhost:9080"));
+        configuration.setAllowedOrigins(mutableListOf("http://localhost:9080", "*"));
         configuration.setAllowedMethods(mutableListOf("*"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(
