@@ -6,7 +6,7 @@ import javax.persistence.*
 @Entity
 data class MatchRecord(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long = 0L,
+    val id: Long = 0L,
         val gameType: GameType = GameType.BUBBLE_HOCKEY,
         val playerOneId: Long = 0L,
         val playerTwoId: Long = 0L,

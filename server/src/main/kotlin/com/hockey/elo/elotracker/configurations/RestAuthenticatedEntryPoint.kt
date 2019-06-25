@@ -19,4 +19,5 @@ class RestAuthenticatedEntryPoint: AuthenticationEntryPoint {
 
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
     }
+
 }
