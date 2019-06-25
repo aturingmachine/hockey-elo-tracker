@@ -37,16 +37,16 @@ class SecurityConfigurations(
         }
 
         http
+            .authorizeRequests()
+            .antMatchers("/login").permitAll()
+            .antMatchers("/", "/api/v1/users/**").authenticated()
+            .antMatchers("/api/admin/**").hasRole("ADMIN")
+            .and()
             .cors()
             .and()
             .csrf().disable()
             .exceptionHandling()
             .authenticationEntryPoint(restAuthenticationEntryPoint)
-            .and()
-            .authorizeRequests()
-            .antMatchers("POST", "/login").permitAll()
-            .antMatchers("/", "/api/**").authenticated()
-            .antMatchers("/api/admin/**").hasRole("ADMIN")
             .and()
             .addFilterBefore(SessionFilter(), SecurityContextPersistenceFilter::class.java)
             .formLogin()
@@ -64,7 +64,7 @@ class SecurityConfigurations(
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowedOrigins = mutableListOf("http://localhost:9080")
+        configuration.allowedOrigins = mutableListOf("http://localhost:9080", "*")
         configuration.allowedMethods = mutableListOf("*")
         configuration.allowCredentials = true
         configuration.allowedHeaders = mutableListOf("Authorization", "Cache-Control", "Content-Type")
