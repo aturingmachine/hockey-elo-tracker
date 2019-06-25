@@ -11,7 +11,6 @@ RUN /elo-tracker/gradlew build -x test
 RUN mv /elo-tracker/build/libs/*.jar /elo-tracker/app.jar
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/elo-tracker/app.jar"]
 
-### Docker Compose
 # docker build --no-cache -t elo-tracker-dev .
 # docker run -it --rm /
 # -e ELO_TRACKER_DB_USERNAME=${ELO_TRACKER_DB_USERNAME} /
