@@ -43,6 +43,21 @@ class EloHistoryServiceTest {
         assertThat(eloHistory.elo).isEqualTo(elo)
     }
 
+//    @Test
+//    fun `createEloHistory-EloHistory is saved with initialization`() {
+//        val newEloHistoryRecord = EloHistoryRecord(0, userId, gameType, 1200, Date())
+//        val passedInEloHistoryRecord = EloHistoryRecord(0, userId, gameType, elo, Date())
+//
+//        `when`(eloHistoryRepository.findAllByUserIdAndGameType(userId, gameType))
+//                .thenReturn(mutableListOf())
+//        `when`(eloHistoryRepository.save(any(EloHistoryRecord::class.java)))
+//                .thenReturn(newEloHistoryRecord)
+//                .thenReturn(passedInEloHistoryRecord)
+//
+//        eloHistoryService.createEloHistory(userId, gameType, elo)
+//        verify(eloHistoryRepository).save(newEloHistoryRecord)
+//    }
+
     @Test
     fun `retrieveEloHistoryFor-EloHistoryRecord is converted to EloHistory`() {
         `when`(eloHistoryRepository.findAllByUserIdAndGameType(userId, gameType))
