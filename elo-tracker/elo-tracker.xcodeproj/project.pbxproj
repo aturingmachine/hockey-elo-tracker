@@ -14,6 +14,7 @@
 		E0DE513022B1221A00DED010 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0DE512F22B1221A00DED010 /* Preview Assets.xcassets */; };
 		E0DE513322B1221A00DED010 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0DE513122B1221A00DED010 /* LaunchScreen.storyboard */; };
 		E0DE513E22B1221A00DED010 /* elo_trackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DE513D22B1221A00DED010 /* elo_trackerTests.swift */; };
+		E0F5048A22C4EE12003A5B3B /* EloTrackerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F5048922C4EE12003A5B3B /* EloTrackerClient.swift */; };
 		E0FD92DE22BBB00800FCFF93 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FD92DD22BBB00700FCFF93 /* User.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		E0DE513922B1221A00DED010 /* elo-trackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "elo-trackerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0DE513D22B1221A00DED010 /* elo_trackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = elo_trackerTests.swift; sourceTree = "<group>"; };
 		E0DE513F22B1221A00DED010 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E0F5048922C4EE12003A5B3B /* EloTrackerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EloTrackerClient.swift; sourceTree = "<group>"; };
 		E0FD92DD22BBB00700FCFF93 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,6 +91,7 @@
 				E0DE513122B1221A00DED010 /* LaunchScreen.storyboard */,
 				E0DE513422B1221A00DED010 /* Info.plist */,
 				E0DE512E22B1221A00DED010 /* Preview Content */,
+				E0F5048922C4EE12003A5B3B /* EloTrackerClient.swift */,
 			);
 			path = "elo-tracker";
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0FD92DE22BBB00800FCFF93 /* User.swift in Sources */,
+				E0F5048A22C4EE12003A5B3B /* EloTrackerClient.swift in Sources */,
 				E0DE512722B1221800DED010 /* AppDelegate.swift in Sources */,
 				E0DE512922B1221800DED010 /* SceneDelegate.swift in Sources */,
 				E0DE512B22B1221800DED010 /* UserView.swift in Sources */,
