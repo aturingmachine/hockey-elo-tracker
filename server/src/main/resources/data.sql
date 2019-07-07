@@ -1,5 +1,5 @@
-#Users and Authorities
-INSERT INTO users(username, password, enabled) VALUES ('pi','$2a$10$0Sv774g9QW7AsgVvwdJP8OodPmdML6xG1SU369zUEp1ka41c6uSiu', true);
+# Users and Authorities
+;INSERT INTO users(username, password, enabled) VALUES ('pi','$2a$10$0Sv774g9QW7AsgVvwdJP8OodPmdML6xG1SU369zUEp1ka41c6uSiu', true);
 INSERT INTO authorities (username, authority) VALUES ('pi', 'USER');
 
 INSERT INTO users(username, password, enabled) VALUES ('piAdmin','$2a$10$l5dOQ6xrbt4KlnIP8wZY4.a4OCu0zgVjnRSoFDHeYMLI85vVA.wam', true);

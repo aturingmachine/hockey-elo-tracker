@@ -7,11 +7,13 @@ spring:
     password: ${ELO_TRACKER_DB_PASSWORD}
     initialization-mode: always
   jpa:
+    hibernate:
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-        jdbc.time_zone: UTC
-        ddl-auto: create-drop
+        jdbc:
+          time_zone: UTC
 logging:
   level:
     org:
@@ -31,4 +33,4 @@ spring:
   profiles: docker
   datasource:
     url: jdbc:mysql://host.docker.internal:3306/elotracker?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useLegacyDatetimeCode=false
-    initialization-mode: never
+    initialization-mode: always
