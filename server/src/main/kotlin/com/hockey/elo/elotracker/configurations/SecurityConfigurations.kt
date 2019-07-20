@@ -28,7 +28,7 @@ class SecurityConfigurations(
         auth.jdbcAuthentication().dataSource(dataSource)
                 .usersByUsernameQuery(
                         "select username, password, enabled from users where username = ?")
-                .authoritiesByUsernameQuery("select username, authority from authorities where username=?")
+                .authoritiesByUsernameQuery("select username, authority from authorities where username = ?")
     }
 
     override fun configure(http: HttpSecurity?) {
