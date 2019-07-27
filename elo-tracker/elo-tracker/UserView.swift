@@ -21,7 +21,21 @@ struct UserView : View {
                         GameRow(game: game)
                     }
                 }
-            }.navigationBarTitle(Text("Games"))
+                }.navigationBarTitle(Text("Games"))
+        }
+    }
+    
+    private func fetchMatches() {
+        let client = EloTrackerClient.shared
+        
+        client.requestMatches {
+            result in
+            
+            switch result {
+            case .success(MatchRecords):
+                print(items: matchRecords)
+            case .failure(error):
+                print(items: matchRecords)
         }
     }
 }
@@ -29,7 +43,7 @@ struct UserView : View {
 struct UserHeader : View {
     
     @State var userName: String
-    @State var userEmail: String
+    @State var userEmail: Stringprint(items: matchRecords)
     
     var body: some View {
         VStack {
@@ -38,7 +52,7 @@ struct UserHeader : View {
                 .bold()
             Text("\(userEmail)")
                 .font(.headline)
-        }.padding()
+            }.padding()
     }
     
 }
@@ -55,7 +69,7 @@ struct GameRow : View {
                 Spacer()
                 Text("Wins: \(game.wins)").font(.subheadline)
                 Text("Losses: \(game.losses)").font(.subheadline)
-            }.padding()
+                }.padding()
         }
     }
 }
