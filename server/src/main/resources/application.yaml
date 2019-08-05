@@ -6,6 +6,7 @@ spring:
     username: ${ELO_TRACKER_DB_USERNAME}
     password: ${ELO_TRACKER_DB_PASSWORD}
     initialization-mode: always
+    continue-on-error: true
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -33,4 +34,14 @@ spring:
   profiles: docker
   datasource:
     url: jdbc:mysql://host.docker.internal:3306/elotracker?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useLegacyDatetimeCode=false
-    initialization-mode: always
+---
+spring:
+  profiles: gcp
+  cloud:
+    gcp:
+      sql:
+        database-name: ${ELO_TRACKER_DB_NAME}
+        instance-connection-name: ${ELO_TRACKER_INSTANCE_CONNECTION_NAME}
+      project-id: ${ELO_TRACKER_GCP_PROJECT_ID}
+      credentials:
+        location: ${ELO_TRACKER_CREDENTIALS_LOCATION}
